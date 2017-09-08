@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import tk.mbondos.domain.Customer;
+import tk.mbondos.domain.embeddable.Address;
 import tk.mbondos.repositories.CustomerRepository;
 
 import java.util.Arrays;
@@ -22,7 +23,7 @@ public class InvoiceProjectApplication {
 				"Jones,Smith,Williams".split(","))
 				.forEach(
 						a -> {
-							customerRepository.save(new Customer("asd", "123"));
+							customerRepository.save(new Customer(a, new Address("Street", "City", "zipcode"), "123"));
 						});
 
 	}

@@ -31,4 +31,9 @@ public class CustomerService {
     public List<Customer> listAllCustomers() {
         return customerRepository.findAll();
     }
+
+    @Transactional
+    public Customer listCustomer(Long customerId) {
+        return customerRepository.findOne(customerId);
+    }
 }

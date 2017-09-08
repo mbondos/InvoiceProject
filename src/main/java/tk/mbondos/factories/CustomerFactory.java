@@ -11,6 +11,6 @@ public class CustomerFactory {
     }
 
     public Customer create(CustomerDto customerDto) {
-        return new Customer(customerDto.getName(), customerDto.getNip());
+        return new Customer(customerDto.getName(), customerDto.getAddress(), customerDto.getNip());
     }
 }
