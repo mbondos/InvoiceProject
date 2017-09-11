@@ -25,6 +25,7 @@ public class Customer {
     @Column(name = "nip")
     private String nip;
 
+
     public Customer() {
     }
 
