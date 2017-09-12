@@ -35,7 +35,8 @@ public class Invoice {
     public Invoice() {
     }
 
-    public Invoice(String invoiceNumber, LocalDate issueDate, LocalDate serviceDate, Customer customer, Organization organization, PaymentType paymentType, List<InvoiceLines> invoiceLines) {
+    public Invoice(String invoiceNumber, LocalDate issueDate, LocalDate serviceDate, Customer customer,
+                   Organization organization, PaymentType paymentType, List<InvoiceLines> invoiceLines) {
         this.invoiceNumber = invoiceNumber;
         this.issueDate = issueDate;
         this.serviceDate = serviceDate;
