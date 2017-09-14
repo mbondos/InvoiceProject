@@ -1,6 +1,7 @@
 package tk.mbondos.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.thymeleaf.TemplateEngine;
@@ -18,7 +19,7 @@ import java.util.UUID;
 public class PdfGeneratorUtil {
     @Autowired
     private TemplateEngine templateEngine;
-    public void createPdf(String templateName, Map map) throws Exception {
+    public String createPdf(String templateName, Map map) throws Exception {
         Assert.notNull(templateName, "The templateName can not be null");
         Context ctx = new Context();
         if (map != null) {
@@ -33,7 +34,7 @@ public class PdfGeneratorUtil {
         FileOutputStream os = null;
         String fileName = "invoice_" + UUID.randomUUID().toString();
         try {
-            final File outputFile = File.createTempFile(fileName, ".pdf");
+            final File outputFile = new File("src/main/resources/files/" + fileName + ".pdf");
             os = new FileOutputStream(outputFile);
 
             ITextRenderer renderer = new ITextRenderer();
@@ -42,13 +43,28 @@ public class PdfGeneratorUtil {
             renderer.createPDF(os, false);
             renderer.finishPDF();
             System.out.println("PDF created successfully");
+
+            return outputFile.getPath();
         }
         finally {
             if (os != null) {
                 try {
                     os.close();
+
                 } catch (IOException e) { /*ignore*/ }
+            }
+
+        }
+    }
+
+    public void clearDirectory(){
+        File directory = new File("src/main/resources/files/");
+        File[] files = directory.listFiles();
+        if(files!=null) { //some JVMs return null for empty dirs
+            for(File f : files){
+                f.delete();
             }
         }
     }
+
 }
