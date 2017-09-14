@@ -1,5 +1,6 @@
 package tk.mbondos.controllers;
 
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -10,7 +11,7 @@ import tk.mbondos.services.ProductService;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/products")
+@RequestMapping(value = "/products", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ProductController {
     private ProductService productService;
 

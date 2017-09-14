@@ -1,5 +1,7 @@
 package tk.mbondos.dtos;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.stereotype.Component;
 import tk.mbondos.domain.Customer;
 import tk.mbondos.domain.InvoiceLines;
 import tk.mbondos.domain.Organization;
@@ -8,9 +10,12 @@ import tk.mbondos.enums.PaymentType;
 import java.time.LocalDate;
 import java.util.List;
 
+
 public class InvoiceDto {
     private String invoiceNumber;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate issueDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate serviceDate;
     private Customer customer;
     private Organization organization;
