@@ -20,10 +20,6 @@ public class InvoiceProjectApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(InvoiceProjectApplication.class, args);
-		long a = 1234;
-		String s = "asd" + 123;
-		System.out.println(s);
-
 	}
 
 	@Bean
