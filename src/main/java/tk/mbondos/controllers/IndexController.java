@@ -13,5 +13,10 @@ public class IndexController {
         return "index";
     }
 
+    @RequestMapping("/inv")
+    public String invoice() {
+        return "invoice";
+    }
+
 
 }
