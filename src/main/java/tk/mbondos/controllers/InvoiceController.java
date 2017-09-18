@@ -12,16 +12,16 @@ import tk.mbondos.services.InvoiceService;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/invoices", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "api/invoices", produces = MediaType.APPLICATION_JSON_VALUE)
 public class InvoiceController {
     private InvoiceService invoiceService;
 
-    @Autowired
+
     public InvoiceController(InvoiceService invoiceService) {
         this.invoiceService = invoiceService;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+   @RequestMapping(method = RequestMethod.GET)
     public List<Invoice> getInvoices() {
         return invoiceService.listAllInvoices();
     }

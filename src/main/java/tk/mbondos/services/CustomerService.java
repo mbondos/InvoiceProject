@@ -36,4 +36,9 @@ public class CustomerService {
     public Customer listCustomer(Long customerId) {
         return customerRepository.findOne(customerId);
     }
+
+    @Transactional
+    public List<Customer> searchByName(String name) {
+        return customerRepository.findByNameIgnoreCaseContaining(name);
+    }
 }

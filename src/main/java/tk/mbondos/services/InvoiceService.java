@@ -29,4 +29,9 @@ public class InvoiceService {
     public List<Invoice> listAllInvoices() {
         return invoiceRepository.findAll();
     }
+
+    @Transactional
+    public Invoice findById(Long id) {
+        return invoiceRepository.findOne(id);
+    }
 }
