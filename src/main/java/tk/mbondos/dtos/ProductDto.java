@@ -6,7 +6,7 @@ public class ProductDto {
     private String name;
     private BigDecimal priceNetto;
     private BigDecimal priceBrutto;
-    private int taxRate;
+    private int taxRate = 23;
 
     public ProductDto() {
     }

@@ -77,12 +77,68 @@
                                 <div class="form-group input-group date">
                                     <input type="text" class="form-control " id="typeahead"
                                            data-provide="typeahead" autocomplete="off"
-                                           />
+                                    />
                                     <div class="input-group-addon">
                                         <i class="fa fa-search" aria-hidden="true"></i>
                                     </div>
                                 </div>
-                                <input type="hidden" id="customerIdHidden" th:field="${customerId}" name="name"/>
+                                <input type="hidden" id="customerIdHidden" th:value="${customer.id}"
+                                       th:field="${customer.id}" name="id"/>
+
+
+                            </div>
+
+                            <div class="col-md-5 col-md-offset-2">
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-primary btn-lg" data-toggle="modal"
+                                        data-target="#customerModal" th:text="#{customer.createButton}">
+                                    Create new
+                                </button>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="customerModal" tabindex="-1" role="dialog"
+                                     aria-labelledby="myModalLabel">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close"><span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <h4 class="modal-title" id="myModalLabel" th:text="#{customer.new}">New
+                                                    customer</h4>
+                                            </div>
+                                            <div class="modal-body" id="customerModalFields">
+                                                <label for="customerName" th:text="#{customer.name}">Customer
+                                                    name</label>
+                                                <input type="text" class="form-control" id="customerName"
+                                                       th:field="${customer.name}"/>
+                                                <label for="streetAddress" th:text="#{address.street}">Street
+                                                    address</label>
+                                                <input type="text" class="form-control" id="streetAddress"
+                                                       th:field="${customer.address.streetAddress}"/>
+                                                <label for="city" th:text="#{address.city}">City</label>
+                                                <input type="text" class="form-control" id="city"
+                                                       th:field="${customer.address.city}"/>
+                                                <label for="zipCode" th:text="#{address.zipCode}">Zip code</label>
+                                                <input type="text" class="form-control" id="zipCode"
+                                                       th:field="${customer.address.zipCode}"/>
+                                                <label for="nip" th:text="#{customer.nip}">Nip</label>
+                                                <input type="text" class="form-control" id="nip"
+                                                       th:field="${customer.nip}"/>
+
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" id="cancel" class="btn btn-default"
+                                                        data-dismiss="modal">Cancel
+                                                </button>
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal">Save
+                                                    changes
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
 
                             </div>
@@ -103,7 +159,7 @@
 
                                 <div class="form-group">
                                     <label for="invoiceNumber" th:text="#{invoice.invoiceNumber}">Invoice number</label>
-                                    <input type="text" class="form-control" id="Invoice number"
+                                    <input type="text" class="form-control" id="invoiceNumber"
                                            th:field="*{invoiceNumber}"/>
                                 </div>
 
@@ -153,32 +209,40 @@
                             <h3 class="panel-title" th:text="#{invoice.lines}">Invoice lines</h3>
                         </div>
                         <div class="panel-body">
-                            <a class="btn btn-default" href="#" role="button">Link</a>
-                            <button class="btn btn-default" type="submit">Button</button>
-                            <input class="btn btn-default" type="button" value="Input"/>
-                            <input class="btn btn-default" type="submit" value="Submit"/>
+
+                            <button class="btn btn-default" type="button" id="newRow">New row</button>
+
                         </div>
 
                         <table class="table">
                             <tr>
                                 <th class="col-md-1">Lp</th>
-                                <th class="col-md-5">Name</th>
-                                <th class="col-md-1">Quantity</th>
-                                <th class="col-md-1">VAT</th>
-                                <th class="col-md-1">Netto</th>
-                                <th class="col-md-1">Brutto</th>
-                                <th class="col-md-2">Total</th>
+                                <th class="col-md-5" th:text="#{product.name}">Name</th>
+                                <th class="col-md-1" th:text="#{quantity}">Quantity</th>
+                                <th class="col-md-1" th:text="#{product.taxRate}">VAT</th>
+                                <th class="col-md-1" th:text="#{product.priceNetto}">Netto</th>
+                                <th class="col-md-1" th:text="#{product.priceBrutto}">Brutto</th>
+                                <th class="col-md-2" th:text="#{product.priceBrutto}">Total</th>
                             </tr>
-
-                            <tr class="table-hover" th:each="line : ${invoice?.invoiceLines}">
-                                <td>1</td>
-                                <td th:text="${line.product.name}">asd</td>
-                                <td th:text="${line.quantity}">asd</td>
-                                <td th:text="${line.product.taxRate}">asd</td>
-                                <td th:text="${line.product.priceNetto}">asd</td>
-                                <td th:text="${line.product.priceBrutto}">asd</td>
-                                <td th:text="${line.product.priceBrutto}">asd</td>
+                            <tbody>
+                            <tr style="display: none;" class="table-hover" th:each="iter : ${#numbers.sequence(0, 10)}" th:id="'row' + ${iter}">
+                                <td th:text="${iter}+1"></td>
+                                <td >
+                                    <input type="text" class="form-control" th:field="${lines.linesList[__${iter}__].product.name}"/>
+                                </td>
+                                <td class="col-md-1">
+                                    <input type="text" class="form-control col-md-1" th:field="${lines.linesList[__${iter}__].quantity}"/>
+                                </td>
+                                <td >
+                                    <input type="number" class="form-control" th:value="23" th:field="${lines.linesList[__${iter}__].product.taxRate}"/>
+                                </td>
+                                <td >
+                                    <input type="number" min="0.00" max="10000.00" step="0.01" class="form-control" th:field="${lines.linesList[__${iter}__].product.priceNetto}"/>
+                                </td>
+                                <td ><input type="number" min="0.00" max="10000.00" step="0.01" class="form-control" th:field="${lines.linesList[__${iter}__].product.priceBrutto}"/></td>
+                                <td >total</td>
                             </tr>
+                            </tbody>
 
                         </table>
 
@@ -190,7 +254,6 @@
                         <input type="button" onclick="window.location.href='/'" class="btn btn-danger col-md-offset-3"
                                th:value="#{invoice.cancel}"/>
                     </div>
-                    <input id="search"/>
                 </div>
 
 
@@ -216,44 +279,79 @@
 
 <script type="text/javascript">
 
-     /*working*/
-     jQuery.ajax({
-     url: "/customers",
-     type: "GET",
+    /*working*/
+    jQuery.ajax({
+        url: "/customers",
+        type: "GET",
 
-     contentType: 'application/json; charset=utf-8',
-     success: function (resultData) {
-     $('#typeahead').typeahead({
-     displayKey: 'id',
-     source: function (query, process) {
-         objects = [];
-         map = {};
-         var data = resultData;
-         $.each(data, function(i, object) {
-             map[object.name] = object;
-             objects.push(object.name);
-         });
-         process(objects);
+        contentType: 'application/json; charset=utf-8',
+        success: function (resultData) {
+            $('#typeahead').typeahead({
+                displayKey: 'id',
+                source: function (query, process) {
+                    objects = [];
+                    map = {};
+                    var data = resultData;
+                    $.each(data, function (i, object) {
+                        map[object.name] = object;
+                        objects.push(object.name);
+                    });
+                    process(objects);
 
-     },
-         updater: function(item) {
-             $('#customerIdHidden').val(map[item].id);
-             return item;
-         }
-     })
-
-
-     },
-     error: function (jqXHR, textStatus, errorThrown) {
-     },
-
-     timeout: 120000,
-     });
+                },
+                updater: function (item) {
+                    $('#customerIdHidden').val(map[item].id);
+                    return item;
+                }
+            })
 
 
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+        },
+
+        timeout: 120000,
+    });
+
+</script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#cancel').click(function () {
+            $('#customerModalFields').find('input,select').each(function () {
+                $(this).val('');
+            });
+        });
+    });
 
 </script>
 
+<script type="text/javascript" th:inline="javascript">
+
+    /*<![CDATA[*/
+    $(document).ready(function () {
+        var i = 0;
+        $('#newRow').click(function () {
+            $('#row' + i).show();
+            i++;
+
+
+    });
+    });
+    /*]]>*/
+
+</script>
+
+
+<!--$('table').append("<tr>" +
+    '<td th:th:text="#{customer.name}">   <input type="text" th:field="${lines.linesList[1].quantity}"/> <div th:text="${lines.linesList.add()}" th:remove="all"></div> </td>' +
+    '<td th:th:text="#{customer.name}"></td>' +
+    "<td>aaaa</td>" +
+    "<td>aaaa</td>" +
+    "<td>aaaa</td>" +
+    "<td>aaaa</td>" +
+    "<td>aaaa</td>" +
+    "</tr>");-->
 
 </body>
 </html>

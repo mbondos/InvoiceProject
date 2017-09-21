@@ -10,7 +10,7 @@ public class InvoiceLines {
     private Long id;
 
     @Min(value = 1)
-    private int quantity;
+    private int quantity ;
 
     @ManyToOne
     private Product product;

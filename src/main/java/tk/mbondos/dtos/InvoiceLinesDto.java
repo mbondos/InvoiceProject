@@ -3,7 +3,7 @@ package tk.mbondos.dtos;
 import tk.mbondos.domain.Product;
 
 public class InvoiceLinesDto {
-    private int quantity;
+    private int quantity = 1;
     private Product product;
 
     public InvoiceLinesDto() {

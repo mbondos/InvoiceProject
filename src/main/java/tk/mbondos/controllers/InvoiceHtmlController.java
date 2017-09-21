@@ -5,18 +5,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import tk.mbondos.domain.Customer;
 import tk.mbondos.domain.Invoice;
+import tk.mbondos.domain.InvoiceLines;
+import tk.mbondos.domain.Product;
 import tk.mbondos.dtos.CustomerDto;
 import tk.mbondos.dtos.InvoiceDto;
+import tk.mbondos.dtos.InvoiceLinesDto;
 import tk.mbondos.services.CustomerService;
 import tk.mbondos.services.InvoiceService;
+import tk.mbondos.utils.IdWrapper;
+import tk.mbondos.utils.InvoiceLinesWrapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -48,17 +51,21 @@ public class InvoiceHtmlController {
     public String displayAddInvoiceForm(Model model) {
         model.addAttribute("title", "Add Invoice");
         model.addAttribute("invoice", new InvoiceDto());
-        model.addAttribute("customerId", new String());
+        model.addAttribute("customer", new CustomerDto());
+        InvoiceLinesWrapper linesWrapper = new InvoiceLinesWrapper();
+        //linesWrapper.getLinesList().add(0, new InvoiceLines(1337,new Product()));
+        model.addAttribute("lines", linesWrapper);
         return "invoice";
     }
 
-
     @RequestMapping(value = "add", method = RequestMethod.POST)
-    public String processAddInvoiceForm(@RequestParam String customerId, @ModelAttribute InvoiceDto invoice) {
-        //invoice.validate();
-        //customerService.createCustomer(customerId);
-        System.out.println(customerId);
-       //invoiceService.createInvoice(invoice);
+    public String processAddInvoiceForm(@ModelAttribute CustomerDto customer, @ModelAttribute InvoiceDto invoice, @ModelAttribute InvoiceLinesWrapper lines) {
+        invoice.validate();
+        customer.validate();
+        System.out.println(lines.getLinesList().get(0).getProduct().getName());
+
+        invoiceService.createInvoice(invoice, customer, lines.getLinesList());
+
         return "redirect:add";
     }
 

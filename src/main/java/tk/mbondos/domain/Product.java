@@ -24,7 +24,7 @@ public class Product {
     private BigDecimal priceBrutto;
 
     @Range(min = 0, max = 100)
-    private int taxRate;
+    private int taxRate=23; //TODO move default value to html
 
     public Product() {
     }
