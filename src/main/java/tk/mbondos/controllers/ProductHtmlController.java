@@ -58,25 +58,7 @@ public class ProductHtmlController {
         return "products/add";
     }
 
-    @RequestMapping(value = "pdf", method = RequestMethod.GET, produces = "application/pdf")
-    public @ResponseBody FileSystemResource generatePdf(HttpServletResponse response) {
-        Map<String,String> data = new HashMap<String,String>();
-        File file = null;
-        data.put("name", "Max");
-        try {
-            pdfGeneratorUtil.clearDirectory();
-            String download = pdfGeneratorUtil.createPdf("pdftemplate", data);
-            file = new File(download);
-            response.setContentType("application/pdf");
-            response.setHeader("Content-Disposition", "inline; filename=" + file.getName());
-            response.setHeader("Content-Length", String.valueOf(file.length()));
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new FileSystemResource(file);
-
-    }
 
 
     @RequestMapping(value = "add", method = RequestMethod.POST)

@@ -2,6 +2,7 @@ package tk.mbondos.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import java.math.BigDecimal;
 
 @Entity
 public class InvoiceLines {
@@ -15,12 +16,15 @@ public class InvoiceLines {
     @ManyToOne
     private Product product;
 
+    private BigDecimal priceTotal;
+
     public InvoiceLines() {
     }
 
     public InvoiceLines(int quantity, Product product) {
         this.quantity = quantity;
         this.product = product;
+        this.priceTotal = product.getPriceBrutto().multiply(BigDecimal.valueOf(quantity));
     }
 
     public Long getId() {
@@ -45,5 +49,13 @@ public class InvoiceLines {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public BigDecimal getPriceTotal() {
+        return priceTotal;
+    }
+
+    public void setPriceTotal(BigDecimal priceTotal) {
+        this.priceTotal = priceTotal;
     }
 }

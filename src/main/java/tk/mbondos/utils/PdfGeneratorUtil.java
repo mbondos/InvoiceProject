@@ -21,16 +21,16 @@ public class PdfGeneratorUtil {
     private TemplateEngine templateEngine;
     public String createPdf(String templateName, Map map) throws Exception {
         Assert.notNull(templateName, "The templateName can not be null");
-        Context ctx = new Context();
+        Context context = new Context();
         if (map != null) {
             Iterator itMap = map.entrySet().iterator();
             while (itMap.hasNext()) {
                 Map.Entry pair = (Map.Entry) itMap.next();
-                ctx.setVariable(pair.getKey().toString(), pair.getValue());
+                context.setVariable(pair.getKey().toString(), pair.getValue());
             }
         }
 
-        String processedHtml = templateEngine.process(templateName, ctx);
+        String processedHtml = templateEngine.process(templateName, context);
         FileOutputStream os = null;
         String fileName = "invoice_" + UUID.randomUUID().toString();
         try {

@@ -108,22 +108,22 @@
                                                     customer</h4>
                                             </div>
                                             <div class="modal-body" id="customerModalFields">
-                                                <label for="customerName" th:text="#{customer.name}">Customer
+                                                <label for="customerName" autocomplete="off" th:text="#{customer.name}">Customer
                                                     name</label>
-                                                <input type="text" class="form-control" id="customerName"
+                                                <input type="text" class="form-control" id="customerName" autocomplete="off"
                                                        th:field="${customer.name}"/>
                                                 <label for="streetAddress" th:text="#{address.street}">Street
                                                     address</label>
-                                                <input type="text" class="form-control" id="streetAddress"
+                                                <input type="text" class="form-control" id="streetAddress" autocomplete="off"
                                                        th:field="${customer.address.streetAddress}"/>
                                                 <label for="city" th:text="#{address.city}">City</label>
-                                                <input type="text" class="form-control" id="city"
+                                                <input type="text" class="form-control" id="city" autocomplete="off"
                                                        th:field="${customer.address.city}"/>
                                                 <label for="zipCode" th:text="#{address.zipCode}">Zip code</label>
-                                                <input type="text" class="form-control" id="zipCode"
+                                                <input type="text" class="form-control" id="zipCode" autocomplete="off"
                                                        th:field="${customer.address.zipCode}"/>
-                                                <label for="nip" th:text="#{customer.nip}">Nip</label>
-                                                <input type="text" class="form-control" id="nip"
+                                                <label for="nip" th:text="#{nip}">Nip</label>
+                                                <input type="text" class="form-control" id="nip" autocomplete="off"
                                                        th:field="${customer.nip}"/>
 
 
@@ -159,7 +159,7 @@
 
                                 <div class="form-group">
                                     <label for="invoiceNumber" th:text="#{invoice.invoiceNumber}">Invoice number</label>
-                                    <input type="text" class="form-control" id="invoiceNumber"
+                                    <input type="text" class="form-control" id="invoiceNumber" autocomplete="off"
                                            th:field="*{invoiceNumber}"/>
                                 </div>
 
@@ -231,16 +231,16 @@
                                     <input type="text" class="form-control" th:field="${lines.linesList[__${iter}__].product.name}"/>
                                 </td>
                                 <td class="col-md-1">
-                                    <input type="number" class="form-control col-md-1" id="quantity" th:field="${lines.linesList[__${iter}__].quantity}"/>
+                                    <input type="number" class="form-control col-md-1" id="quantity" autocomplete="off" th:field="${lines.linesList[__${iter}__].quantity}"/>
                                 </td>
                                 <td >
-                                    <input type="number" class="form-control" id="tax" th:value="23" th:field="${lines.linesList[__${iter}__].product.taxRate}"/>
+                                    <input type="number" class="form-control" id="tax" autocomplete="off" th:value="23" th:field="${lines.linesList[__${iter}__].product.taxRate}"/>
                                 </td>
                                 <td >
-                                    <input type="number" min="0.00" max="10000.00" step="0.01" class="form-control" id="netto" th:field="${lines.linesList[__${iter}__].product.priceNetto}"/>
+                                    <input type="number" min="0.00" max="10000.00" step="0.01" class="form-control" id="netto" autocomplete="off" th:field="${lines.linesList[__${iter}__].product.priceNetto}"/>
                                 </td>
-                                <td ><input type="number" min="0.00" max="10000.00" step="0.01" class="form-control" id="brutto" th:field="${lines.linesList[__${iter}__].product.priceBrutto}"/></td>
-                                <td ><input type="number" class="form-control" id="total" /></td>
+                                <td ><input type="number" min="0.00" max="10000.00" step="0.01" class="form-control" id="brutto" autocomplete="off" th:field="${lines.linesList[__${iter}__].product.priceBrutto}"/></td>
+                                <td ><input type="number" class="form-control" id="total" autocomplete="off" th:field="${lines.linesList[__${iter}__].priceTotal}"/></td>
                             </tr>
                             </tbody>
 
@@ -252,7 +252,7 @@
                     <div class="col-md-4 col-md-offset-4">
                         <input type="submit" class="btn btn-success col-md-3 " th:value="#{invoice.submit}"/>
                         <input type="button" onclick="window.location.href='/'" class="btn btn-danger col-md-offset-3"
-                               th:value="#{invoice.cancel}"/>
+                               th:value="#{invoice.cancel}" value="Cancel"/>
                     </div>
                 </div>
 

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>InvoiceProject</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.7/css/bootstrap.min.css"
+          rel="stylesheet" media="print"/>
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.7/css/bootstrap.min.css"
+          rel="stylesheet" media="screen"/>
+    <style>
+        .invoice-title h2, .invoice-title h3 {
+            display: inline-block;
+        }
+
+        .table > tfoot > tr > .no-line {
+            border-top: none;
+        }
+
+        .table > thead > tr > .no-line {
+            border-bottom: none;
+        }
+
+        .table > tbody > tr > .thick-line {
+            border-top: 2px solid;
+        }
+
+        .short {
+            margin-bottom: 5px;
+            margin-top: 0px;
+        }
+    </style>
+
+</head>
+
+
+<body>
+<div class="container">
+    <div class="row">
+        <div>
+            <div class="invoice-title">
+                <h3>
+                    <div th:text="#{invoice.nr}"></div>
+                    <small th:text="${invoice.invoiceNumber}"></small>
+                </h3>
+                <h3 class="pull-right">
+                    <small th:text="#{invoice.issueDate} + ${invoice.issueDate}">11-12-23</small>
+                </h3>
+
+            </div>
+
+
+            <hr style="margin-bottom: 5px"/>
+            <div class="row">
+                <div class="col-xs-5">
+                    <ul class="list-unstyled">
+                        <li><strong th:text="#{invoice.billedTo}"></strong></li>
+                        <li th:text="${invoice.organization.name}"></li>
+                        <li th:text="${invoice.organization.address.streetAddress}"></li>
+                        <li th:text="${invoice.organization.address.zipCode} + ', ' + ${invoice.organization.address.city}"></li>
+                        <li th:text="#{nip} +  ': ' +  ${invoice.organization.nip}"></li>
+                        <li th:text="#{email} +  ': ' +  ${invoice.organization.email}"></li>
+                        <li th:text="#{phone} +  ': ' +  ${invoice.organization.phone}"></li>
+                        <li th:text="#{bankAccountNumber} + ': ' + ${invoice.organization.bankAccountNumber}"></li>
+
+                    </ul>
+                </div>
+                <div class="col-xs-6 text-right">
+                    <ul class="list-unstyled">
+                        <li><strong th:text="#{invoice.buyer}"></strong></li>
+                        <li th:text="${invoice.customer.name}"></li>
+                        <li th:text="${invoice.customer.address.streetAddress}"></li>
+                        <li th:text="${invoice.customer.address.zipCode} + ', ' + ${invoice.customer.address.city}"></li>
+                        <li th:text="#{nip} +  ': ' +  ${invoice.customer.nip}"></li>
+
+
+                    </ul>
+                </div>
+            </div>
+
+            <hr class="short"/>
+            <div class="row">
+                <div class="col-xs-5">
+                    <ul class="list-unstyled">
+                        <li><strong th:text="#{invoice.paymentMethod}"></strong></li>
+                        <li th:text="#{'invoice.paymentType.'+${{invoice.paymentType}}}"></li>
+
+
+                    </ul>
+                </div>
+                <div class="col-xs-6 text-right">
+                    <ul class="list-unstyled">
+                        <li><strong th:text="#{invoice.serviceDate}"></strong></li>
+                        <li th:text="${invoice.serviceDate}"></li>
+
+
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="row">
+        <!--   <div >
+               <div class="panel panel-default">
+                   <div class="panel-heading">
+                       <h3 class="panel-title"><strong>Order summary</strong></h3>
+                   </div>
+                   <div class="panel-body">-->
+        <hr class="short"/>
+        <div class="table-responsive">
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+
+                    <th>Lp.</th>
+                    <th class="text-center" th:text="#{product.name}">Name</th>
+                    <th class="text-center" th:text="#{quantity}">Quantity</th>
+                    <th class="text-center" th:text="#{product.taxRate}">VAT</th>
+                    <th class="text-center" th:text="#{product.priceNetto}">Netto</th>
+                    <th class="text-center" th:text="#{product.priceBrutto}">Brutto</th>
+                    <th class="text-right" th:text="#{product.priceTotal}">Total</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- foreach ($order->lineItems as $line) or some such thing here -->
+                <tr th:each="line : ${invoice.invoiceLines}">
+                    <td>1</td>
+                    <td class="text-center" th:text="${line.product.name}"></td>
+                    <td class="text-center" th:text="${line.quantity}"></td>
+                    <td class="text-center" th:text="${line.product.taxRate}"></td>
+                    <td class="text-center" th:text="${line.product.priceNetto}"></td>
+                    <td class="text-center" th:text="${line.product.priceBrutto}"></td>
+                    <td class="text-right" th:text="${line.priceTotal}"></td>
+
+                </tr>
+
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td class="thick-line"></td>
+                    <td class="thick-line"></td>
+                    <td class="thick-line"></td>
+                    <td class="thick-line"></td>
+                    <td class="thick-line"></td>
+                    <td class="thick-line text-center"><strong>Subtotal</strong></td>
+                    <td class="thick-line text-right">$670.99</td>
+                </tr>
+                <tr>
+                    <td class="no-line"></td>
+                    <td class="no-line"></td>
+                    <td class="no-line"></td>
+                    <td class="no-line"></td>
+                    <td class="no-line"></td>
+                    <td class="no-line text-center"><strong>Shipping</strong></td>
+                    <td class="no-line text-right">$15</td>
+                </tr>
+                <tr>
+                    <td class="no-line"></td>
+                    <td class="no-line"></td>
+                    <td class="no-line"></td>
+                    <td class="no-line"></td>
+                    <td class="no-line"></td>
+                    <td class="no-line text-center"><strong>Total</strong></td>
+                    <td class="no-line text-right">$685.99</td>
+                </tr>
+                </tfoot>
+
+            </table>
+        </div>
+
+
+        <!--               </div>
+                   </div>
+               </div>-->
+
+
+    </div>
+</div>
+</body>
+</html>

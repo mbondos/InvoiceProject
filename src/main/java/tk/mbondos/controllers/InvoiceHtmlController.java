@@ -2,6 +2,7 @@ package tk.mbondos.controllers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,22 +19,29 @@ import tk.mbondos.services.CustomerService;
 import tk.mbondos.services.InvoiceService;
 import tk.mbondos.utils.IdWrapper;
 import tk.mbondos.utils.InvoiceLinesWrapper;
+import tk.mbondos.utils.PdfGeneratorUtil;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/invoices")
 public class InvoiceHtmlController {
     InvoiceService invoiceService;
     CustomerService customerService;
+    PdfGeneratorUtil pdfGeneratorUtil;
+
 
     @Autowired
-    public InvoiceHtmlController(InvoiceService invoiceService, CustomerService customerService) {
+    public InvoiceHtmlController(InvoiceService invoiceService, CustomerService customerService, PdfGeneratorUtil pdfGeneratorUtil) {
         this.invoiceService = invoiceService;
         this.customerService = customerService;
+        this.pdfGeneratorUtil = pdfGeneratorUtil;
     }
-
 
 
 
@@ -67,6 +75,26 @@ public class InvoiceHtmlController {
         invoiceService.createInvoice(invoice, customer, lines.getLinesList());
 
         return "redirect:add";
+    }
+
+    @RequestMapping(value = "pdf", method = RequestMethod.GET, produces = "application/pdf")
+    public @ResponseBody FileSystemResource generatePdf(HttpServletResponse response) {
+        Map<String,Object> data = new HashMap<String,Object>();
+        File file = null;
+        data.put("invoice", invoiceService.findById(Long.valueOf(1)));
+        try {
+            pdfGeneratorUtil.clearDirectory();
+            String download = pdfGeneratorUtil.createPdf("pdftemplate", data);
+            file = new File(download);
+            response.setContentType("application/pdf");
+            response.setHeader("Content-Disposition", "inline; filename=" + file.getName());
+            response.setHeader("Content-Length", String.valueOf(file.length()));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new FileSystemResource(file);
+
     }
 
 }

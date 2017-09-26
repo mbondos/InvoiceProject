@@ -27,19 +27,23 @@ public class InvoiceProjectApplication {
 								  OrganizationRepository organizationRepository, InvoiceLinesRepository invoiceLinesRepository,
 								  ProductRepository productRepository) {
 		return (evt) -> Arrays.asList(
-				"Jones,Jonny,Williams".split(","))
+				"John Jones,Jonny Wiertara,Rebeca Williams".split(","))
 				.forEach(
 						a -> {
-							Customer customer = new Customer(a, new Address("Street", "City", "zipcode"), "123");
+							Customer customer = new Customer(a, new Address("ul. Lubartowska 54", "Lublin", "20-256"), "1526939481");
 							customerRepository.save(customer);
 							List<InvoiceLines> invoiceLines = new ArrayList<>();
 							Product product = new Product(a, new BigDecimal(100), new BigDecimal(123), 23);
 							productRepository.save(product);
 							InvoiceLines invoiceLines1 = new InvoiceLines(1, product);
+							InvoiceLines invoiceLines2 = new InvoiceLines(2, product);
+							InvoiceLines invoiceLines3 = new InvoiceLines(3, product);
 							invoiceLines.add(invoiceLines1);
+							invoiceLines.add(invoiceLines2);
+							invoiceLines.add(invoiceLines3);
 							invoiceLinesRepository.save(invoiceLines);
-							Organization organization = new Organization("ASD", new Address("Street", "City", "zipcode"),
-									"nip", "phone","email", "website", "12312313");
+							Organization organization = new Organization("Organization inc.", new Address("Bakers Street 54", "London", "20-255"),
+									"4299302396", "666 666 666","tras-rubiez123@gmail.com", "website", "61 1090 1014 0000 0712 1981 2874");
 							organizationRepository.save(organization);
 							invoiceRepository.save(new Invoice("01/09/2017", LocalDate.of(2017,5,23), LocalDate.of(2017,5,23), customer,
 									organization, PaymentType.CASH, invoiceLines));

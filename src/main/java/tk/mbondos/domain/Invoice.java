@@ -4,6 +4,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import tk.mbondos.enums.PaymentType;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -31,6 +32,12 @@ public class Invoice {
 
     @OneToMany
     private List<InvoiceLines> invoiceLines;
+
+    private BigDecimal totalNetto;
+
+    private BigDecimal totalBrutto;
+
+
 
     public Invoice() {
     }

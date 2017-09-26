@@ -18,7 +18,9 @@ import tk.mbondos.repositories.InvoiceRepository;
 import tk.mbondos.repositories.ProductRepository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class InvoiceService {
@@ -56,14 +58,19 @@ public class InvoiceService {
         return invoiceRepository.findOne(id);
     }
 
+
+
     @Transactional
     public void createInvoice(InvoiceDto invoiceDto, CustomerDto customerDto, List<InvoiceLinesDto> invoiceLinesDtos) {
         Invoice invoice = invoiceFactory.create(invoiceDto);
         Customer customer;
-        List<InvoiceLines> invoiceLines = new ArrayList<>(100);
+        List<InvoiceLines> invoiceLines = new ArrayList<>();
 
         for (InvoiceLinesDto linesDto : invoiceLinesDtos) {
-            if (linesDto != null && !linesDto.getProduct().getName().isEmpty() && linesDto.getProduct() != null) {
+            if (linesDto != null
+                    && linesDto.getProduct() != null
+                    && !linesDto.getProduct().getName().isEmpty() ) {
+
                 invoiceLines.add(invoiceLinesFactory.create(linesDto));
                 Product product = linesDto.getProduct();
                 productRepository.save(product);
