@@ -27,6 +27,11 @@ public class OrganizationService {
     }
 
     @Transactional
+    public Organization findById(Long id) {
+        return organizationRepository.findOne(id);
+    }
+
+    @Transactional
     public List<Organization> listAllOrganizations() {
         return organizationRepository.findAll();
     }

@@ -12,6 +12,10 @@ public class InvoiceLinesFactory {
     public InvoiceLines create(InvoiceLinesDto invoiceLinesDto) {
         return new InvoiceLines(
                 invoiceLinesDto.getQuantity(),
-                invoiceLinesDto.getProduct());
+                invoiceLinesDto.getProduct(),
+                invoiceLinesDto.getValueNetto(),
+                invoiceLinesDto.getValueBrutto(),
+                invoiceLinesDto.getValueTax());
+
     }
 }

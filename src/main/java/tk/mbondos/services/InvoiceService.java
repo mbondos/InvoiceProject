@@ -2,20 +2,16 @@ package tk.mbondos.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tk.mbondos.domain.Customer;
-import tk.mbondos.domain.Invoice;
-import tk.mbondos.domain.InvoiceLines;
-import tk.mbondos.domain.Product;
+import tk.mbondos.domain.*;
 import tk.mbondos.dtos.CustomerDto;
 import tk.mbondos.dtos.InvoiceDto;
 import tk.mbondos.dtos.InvoiceLinesDto;
+import tk.mbondos.dtos.OrganizationDto;
 import tk.mbondos.factories.CustomerFactory;
 import tk.mbondos.factories.InvoiceFactory;
 import tk.mbondos.factories.InvoiceLinesFactory;
-import tk.mbondos.repositories.CustomerRepository;
-import tk.mbondos.repositories.InvoiceLinesRepository;
-import tk.mbondos.repositories.InvoiceRepository;
-import tk.mbondos.repositories.ProductRepository;
+import tk.mbondos.factories.OrganizationFactory;
+import tk.mbondos.repositories.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,8 +27,11 @@ public class InvoiceService {
     private InvoiceLinesFactory invoiceLinesFactory;
     private InvoiceLinesRepository invoiceLinesRepository;
     private ProductRepository productRepository;
+    private OrganizationRepository organizationRepository;
+    private OrganizationService organizationService;
+    private OrganizationFactory organizationFactory;
 
-    public InvoiceService(InvoiceRepository invoiceRepository, InvoiceFactory invoiceFactory, CustomerFactory customerFactory, CustomerRepository customerRepository, InvoiceLinesFactory invoiceLinesFactory, InvoiceLinesRepository invoiceLinesRepository, ProductRepository productRepository) {
+    public InvoiceService(InvoiceRepository invoiceRepository, InvoiceFactory invoiceFactory, CustomerFactory customerFactory, CustomerRepository customerRepository, InvoiceLinesFactory invoiceLinesFactory, InvoiceLinesRepository invoiceLinesRepository, ProductRepository productRepository, OrganizationRepository organizationRepository, OrganizationService organizationService, OrganizationFactory organizationFactory) {
         this.invoiceRepository = invoiceRepository;
         this.invoiceFactory = invoiceFactory;
         this.customerFactory = customerFactory;
@@ -40,6 +39,9 @@ public class InvoiceService {
         this.invoiceLinesFactory = invoiceLinesFactory;
         this.invoiceLinesRepository = invoiceLinesRepository;
         this.productRepository = productRepository;
+        this.organizationRepository = organizationRepository;
+        this.organizationService = organizationService;
+        this.organizationFactory = organizationFactory;
     }
 
     @Transactional
@@ -61,9 +63,10 @@ public class InvoiceService {
 
 
     @Transactional
-    public void createInvoice(InvoiceDto invoiceDto, CustomerDto customerDto, List<InvoiceLinesDto> invoiceLinesDtos) {
+    public void createInvoice(InvoiceDto invoiceDto, CustomerDto customerDto, OrganizationDto organizationDto, List<InvoiceLinesDto> invoiceLinesDtos) {
         Invoice invoice = invoiceFactory.create(invoiceDto);
         Customer customer;
+        Organization organization;
         List<InvoiceLines> invoiceLines = new ArrayList<>();
 
         for (InvoiceLinesDto linesDto : invoiceLinesDtos) {
@@ -85,8 +88,16 @@ public class InvoiceService {
             customer = customerFactory.create(customerDto);
             customerRepository.save(customer);
         }
+        if (organizationDto.getId() != null) {
+            organization = organizationService.findById(organizationDto.getId());
+        } else {
+            organization = organizationFactory.create(organizationDto);
+            organizationRepository.save(organization);
+        }
+
         invoice.setInvoiceLines(invoiceLines);
         invoice.setCustomer(customer);
+        invoice.setOrganization(organization); //TODO bind invoice with organization
         invoiceRepository.save(invoice);
     }
 

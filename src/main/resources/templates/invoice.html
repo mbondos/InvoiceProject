@@ -14,26 +14,31 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
             th:src="@{/js/bootstrap.min.js}" type='text/javascript'></script>
 
+    <!--Calx & Numeral-->
+    <script src="../static/js/numeral.min.js"
+            th:src="@{/js/numeral.min.js}"></script>
+
+    <script src="../static/js/jquery-calx-2.2.6.min.js"
+            th:src="@{/js/jquery-calx-2.2.6.min.js}"></script>
+
+    <!--Datepicker-->
     <link href="../static/css/bootstrap-datepicker.min.css"
           th:href="@{/css/bootstrap-datepicker.min.css}" rel="stylesheet" media="screen"/>
 
     <script src="../static/js/bootstrap-datepicker.min.js"
             th:src="@{/js/bootstrap-datepicker.min.js}"></script>
 
-
     <script src="../static/js/bootstrap-datepicker.pl.min.js"
             th:src="@{/js/bootstrap-datepicker.pl.min.js}"></script>
 
+    <!--Typeahead-->
     <script src="../static/js/typeahead.min.js"
             th:src="@{/js/typeahead.min.js}" type='text/javascript'></script>
-
-    <script src="../static/js/bloodhound.js"
-            th:src="@{/js/bloodhound.js}" type='text/javascript'></script>
-
 
     <link href="../static/css/style.css"
           th:href="@{/css/style.css}" rel="stylesheet" media="screen"/>
 
+    <!--Font Awesome-->
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
           rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
           crossorigin="anonymous"/>
@@ -64,7 +69,10 @@
 
             </div>
 
-            <form action="#" th:action="@{/invoices/add}" th:object="${invoice}" th:method="POST">
+            <form id="dynamic" action="#" th:action="@{/invoices/add}" th:object="${invoice}" th:method="POST">
+                <input type="hidden"
+                       th:field="${organization.id}" name="id" th:value="1"/>
+
                 <!-- Customer -->
                 <div class="row">
                     <div class="panel panel-default">
@@ -110,11 +118,13 @@
                                             <div class="modal-body" id="customerModalFields">
                                                 <label for="customerName" autocomplete="off" th:text="#{customer.name}">Customer
                                                     name</label>
-                                                <input type="text" class="form-control" id="customerName" autocomplete="off"
+                                                <input type="text" class="form-control" id="customerName"
+                                                       autocomplete="off"
                                                        th:field="${customer.name}"/>
                                                 <label for="streetAddress" th:text="#{address.street}">Street
                                                     address</label>
-                                                <input type="text" class="form-control" id="streetAddress" autocomplete="off"
+                                                <input type="text" class="form-control" id="streetAddress"
+                                                       autocomplete="off"
                                                        th:field="${customer.address.streetAddress}"/>
                                                 <label for="city" th:text="#{address.city}">City</label>
                                                 <input type="text" class="form-control" id="city" autocomplete="off"
@@ -223,26 +233,113 @@
                                 <th class="col-md-1" th:text="#{product.priceNetto}">Netto</th>
                                 <th class="col-md-1" th:text="#{product.priceBrutto}">Brutto</th>
                                 <th class="col-md-1" th:text="#{product.priceTotal}">Total</th>
+                                <th class="col-md-1" th:text="#{remove}">Remove</th>
                             </tr>
-                            <tbody>
-                            <tr style="display: none;" class="table-hover" th:each="iter : ${#numbers.sequence(0, 10)}" th:id="'row' + ${iter}">
+                            <tbody id="itemlist">
+                            <tr class="table-hover" th:style="${iter}&lt;1 ? 'display:float' : 'display:none'"
+                                th:each="iter : ${#numbers.sequence(0, 10)}"
+                                th:id="'row' + ${iter}">
                                 <td th:text="${iter}+1"></td>
-                                <td >
-                                    <input type="text" class="form-control" th:field="${lines.linesList[__${iter}__].product.name}"/>
+                                <td>
+                                    <input type="text" class="form-control"
+                                           th:field="${lines.linesList[__${iter}__].product.name}"/>
                                 </td>
                                 <td class="col-md-1">
-                                    <input type="number" class="form-control col-md-1" id="quantity" autocomplete="off" th:field="${lines.linesList[__${iter}__].quantity}"/>
+                                    <input type="number" class="form-control col-md-1" id="quantity" autocomplete="off"
+                                           th:attr="data-cell='A'+ (${iter}+1)"
+                                           th:field="${lines.linesList[__${iter}__].quantity}"/>
                                 </td>
-                                <td >
-                                    <input type="number" class="form-control" id="tax" autocomplete="off" th:value="23" th:field="${lines.linesList[__${iter}__].product.taxRate}"/>
+                                <td>
+                                    <input type="number" class="form-control" id="tax" autocomplete="off" th:value="23"
+                                           th:attr="data-cell='B'+ (${iter}+1)"
+                                           th:field="${lines.linesList[__${iter}__].product.taxRate}"/>
                                 </td>
-                                <td >
-                                    <input type="number" min="0.00" max="10000.00" step="0.01" class="form-control" id="netto" autocomplete="off" th:field="${lines.linesList[__${iter}__].product.priceNetto}"/>
+                                <td>
+                                    <input class="form-control input-sm"
+                                           autocomplete="off" th:attr="data-cell='C'+ (${iter}+1)" data-format="0[.]00"
+                                           th:field="${lines.linesList[__${iter}__].product.priceNetto}"/>
                                 </td>
-                                <td ><input type="number" min="0.00" max="10000.00" step="0.01" class="form-control" id="brutto" autocomplete="off" th:field="${lines.linesList[__${iter}__].product.priceBrutto}"/></td>
-                                <td ><input type="number" class="form-control" id="total" autocomplete="off" th:field="${lines.linesList[__${iter}__].priceTotal}"/></td>
+                                <td>
+                                    <input type="number" min="0.00" max="10000.00" step="0.01" class="form-control"
+                                           autocomplete="off" data-format="0[.]00"
+                                           th:attr="data-cell='D'+ (${iter}+1), data-formula='(1+(B'+(${iter}+1)+'/100))*C'+ (${iter}+1)"
+                                           th:field="${lines.linesList[__${iter}__].product.priceBrutto}"/>
+                                </td>
+                                <td>
+                                    <input class="form-control" id="total" autocomplete="off"
+                                           th:attr="data-cell='E'+ (${iter}+1), data-formula='A'+ (${iter}+1)+ '*((1+(B'+ (${iter}+1)+'/100))*C'+ (${iter}+1)+') '"
+                                           data-format="0[.]00"
+                                           th:field="${lines.linesList[__${iter}__].valueBrutto}"/>
+                                    <input type="hidden"
+                                           th:attr="data-cell='F'+ (${iter}+1), data-formula='A'+ (${iter}+1)+ '*C'+ (${iter}+1)"
+                                           data-format="0[.]00" th:field="${lines.linesList[__${iter}__].valueNetto}"
+                                    />
+                                    <input type="hidden"
+                                           th:attr="data-cell='T'+ (${iter}+1), data-formula='E'+ (${iter}+1)+ '-F'+ (${iter}+1)"
+                                           data-format="0[.]00" th:field="${lines.linesList[__${iter}__].valueTax}"
+                                    />
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn-remove btn btn-sm btn-danger"><i class="fa fa-times fa-fw"></i>
+                                    </button>
+                                </td>
                             </tr>
                             </tbody>
+
+                            <tfoot>
+                            <tr>
+                                <td class="thick-line"></td>
+                                <td class="thick-line"></td>
+                                <td class="thick-line"></td>
+                                <td class="thick-line"></td>
+                                <td class="thick-line"></td>
+                                <td class="thick-line"></td>
+                                <td class="thick-line"></td>
+                                <td class="thick-line"></td>
+                            </tr>
+                            <tr>
+                                <td class="no-line"></td>
+                                <td class="no-line"></td>
+                                <td class="no-line"></td>
+                                <td class="no-line"></td>
+                                <td class="no-line"></td>
+                                <td class="no-line text-center"><strong th:text="#{invoice.valueNetto}">Total
+                                    netto</strong></td>
+                                <td class="no-line text-right">
+                                    <input class="form-control no-border" data-cell="G1" data-format="0[.]00" data-formula="SUM(F1:F10)+0"
+                                           th:field="${invoice.totalNetto}"/>
+                                </td>
+                                <td class="no-line"></td>
+                            </tr>
+                            <tr>
+                                <td class="no-line"></td>
+                                <td class="no-line"></td>
+                                <td class="no-line"></td>
+                                <td class="no-line"></td>
+                                <td class="no-line"></td>
+                                <td class="no-line text-center"><strong th:text="#{invoice.valueTax}">Tax total</strong>
+                                </td>
+                                <td class="no-line text-right">
+                                    <input class="form-control no-border" data-cell="H1" data-format="0[.]00" data-formula="I1-G1"
+                                           th:field="${invoice.totalTax}"/>
+                                </td>
+                                <td class="no-line"></td>
+                            </tr>
+                            <tr>
+                                <td class="no-line"></td>
+                                <td class="no-line"></td>
+                                <td class="no-line"></td>
+                                <td class="no-line"></td>
+                                <td class="no-line"></td>
+                                <td class="no-line text-center"><strong th:text="#{invoice.valueBrutto}">Total
+                                    brutto</strong></td>
+                                <td class="no-line text-right">
+                                    <input class="form-control no-border" data-cell="I1" data-format="0[.]00" data-formula="SUM(E1:E10)"
+                                           th:field="${invoice.totalBrutto}"/>
+                                </td>
+                                <td class="no-line"></td>
+                            </tr>
+                            </tfoot>
 
                         </table>
 
@@ -326,82 +423,58 @@
 
 </script>
 
+
 <script type="text/javascript" th:inline="javascript">
 
-    /*<![CDATA[*/
+    $('#dynamic').calx();
+
+    /*    // load a language
+     numeral.language('fr', {
+     delimiters: {
+     thousands: ' ',
+     decimal: '.'
+     },
+     abbreviations: {
+     thousand: 'k',
+     million: 'm',
+     billion: 'b',
+     trillion: 't'
+     },
+     ordinal : function (number) {
+     return number === 1 ? 'er' : 'ème';
+     },
+     currency: {
+     symbol: 'PLN'
+     }
+     });
+
+     // switch between languages
+     numeral.language('fr');*/
+
+
     $(document).ready(function () {
-        var i = 0;
-        $('#newRow').click(function () {
+        var i = 1;
+
+
+        $('#newRow').click(function (e) {
+            e.preventDefault();
             $('#row' + i).show();
             i++;
 
 
+        });
+        $('#itemlist').on('click', '.btn-remove', function () {
+            $(this).parent().parent().remove();
+            $form.calx('update');
+            $form.calx('getCell', 'G1').calculate();
+        });
+
+
     });
-    });
-    /*]]>*/
+
 
 </script>
 
-<script type="text/javascript" th:inline="javascript">
-
-    /*<![CDATA[*/
-    $(document).ready(function () {
-
-
-
-        $(document).on('keyup paste', '#netto', function() {
-            var tax = 1+$("#tax").val() / 100;
-            var netto = +$("#netto").val();
-            var quantity = +$("#quantity").val();
-            $("#brutto").val(netto * tax);
-            var brutto = +$("#brutto").val();
-            $("#total").val(brutto * quantity);
-        });
-
-        $(document).on('keyup paste', '#brutto', function() {
-            var tax = 1+$("#tax").val() / 100;
-            var brutto = +$("#brutto").val();
-            var quantity = +$("#quantity").val();
-            $("#netto").val(brutto / tax);
-            var netto = +$("#netto").val();
-            $("#total").val(brutto * quantity);
-        });
-
-
-        $(document).on('keyup paste', '#quantity', function() {
-            var tax = 1+$("#tax").val() / 100;
-            var brutto = +$("#brutto").val();
-            var quantity = +$("#quantity").val();
-            if (brutto > 0) {
-                $("#total").val(brutto * quantity);
-            }
-        });
-
-        $(document).on('keyup paste', '#tax', function() {
-            var tax = 1+$("#tax").val() / 100;
-            var netto = +$("#netto").val();
-            var quantity = +$("#quantity").val();
-            $("#brutto").val(netto * tax);
-            var brutto = +$("#brutto").val();
-            if (brutto > 0) {
-                $("#total").val(brutto * quantity);
-            }
-        });
-    });
-    /*]]>*/
-
-</script>
-
-
-<!--$('table').append("<tr>" +
-    '<td th:th:text="#{customer.name}">   <input type="text" th:field="${lines.linesList[1].quantity}"/> <div th:text="${lines.linesList.add()}" th:remove="all"></div> </td>' +
-    '<td th:th:text="#{customer.name}"></td>' +
-    "<td>aaaa</td>" +
-    "<td>aaaa</td>" +
-    "<td>aaaa</td>" +
-    "<td>aaaa</td>" +
-    "<td>aaaa</td>" +
-    "</tr>");-->
 
 </body>
 </html>

@@ -7,15 +7,19 @@ import java.math.BigDecimal;
 public class InvoiceLinesDto {
     private int quantity = 1;
     private Product product;
-    private BigDecimal priceTotal;
+    private BigDecimal valueNetto;
+    private BigDecimal valueBrutto;
+    private BigDecimal valueTax;
 
     public InvoiceLinesDto() {
     }
 
-    public InvoiceLinesDto(int quantity, Product product) {
+    public InvoiceLinesDto(int quantity, Product product, BigDecimal valueNetto, BigDecimal valueBrutto, BigDecimal valueTax) {
         this.quantity = quantity;
         this.product = product;
-        this.priceTotal = product.getPriceBrutto().multiply(BigDecimal.valueOf(quantity));
+        this.valueNetto = valueNetto;
+        this.valueBrutto = valueBrutto;
+        this.valueTax = valueTax;
     }
 
     public int getQuantity() {
@@ -34,11 +38,27 @@ public class InvoiceLinesDto {
         this.product = product;
     }
 
-    public BigDecimal getPriceTotal() {
-        return priceTotal;
+    public BigDecimal getValueNetto() {
+        return valueNetto;
     }
 
-    public void setPriceTotal(BigDecimal priceTotal) {
-        this.priceTotal = priceTotal;
+    public void setValueNetto(BigDecimal valueNetto) {
+        this.valueNetto = valueNetto;
+    }
+
+    public BigDecimal getValueBrutto() {
+        return valueBrutto;
+    }
+
+    public void setValueBrutto(BigDecimal valueBrutto) {
+        this.valueBrutto = valueBrutto;
+    }
+
+    public BigDecimal getValueTax() {
+        return valueTax;
+    }
+
+    public void setValueTax(BigDecimal valueTax) {
+        this.valueTax = valueTax;
     }
 }

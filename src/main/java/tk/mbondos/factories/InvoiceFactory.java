@@ -17,7 +17,10 @@ public class InvoiceFactory {
                 invoiceDto.getCustomer(),
                 invoiceDto.getOrganization(),
                 invoiceDto.getPaymentType(),
-                invoiceDto.getInvoiceLines());
+                invoiceDto.getInvoiceLines(),
+                invoiceDto.getTotalNetto(),
+                invoiceDto.getTotalTax(),
+                invoiceDto.getTotalBrutto());
 
     }
 }

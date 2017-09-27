@@ -4,6 +4,8 @@ import tk.mbondos.domain.embeddable.Address;
 
 public class OrganizationDto {
 
+    private Long id;
+
     private String name;
 
     private Address address;
@@ -29,6 +31,15 @@ public class OrganizationDto {
         this.email = email;
         this.website = website;
         this.bankAccountNumber = bankAccountNumber;
+    }
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

@@ -35,6 +35,8 @@ public class Invoice {
 
     private BigDecimal totalNetto;
 
+    private BigDecimal totalTax;
+
     private BigDecimal totalBrutto;
 
 
@@ -42,8 +44,7 @@ public class Invoice {
     public Invoice() {
     }
 
-    public Invoice(String invoiceNumber, LocalDate issueDate, LocalDate serviceDate, Customer customer,
-                   Organization organization, PaymentType paymentType, List<InvoiceLines> invoiceLines) {
+    public Invoice(String invoiceNumber, LocalDate issueDate, LocalDate serviceDate, Customer customer, Organization organization, PaymentType paymentType, List<InvoiceLines> invoiceLines, BigDecimal totalNetto, BigDecimal totalTax, BigDecimal totalBrutto) {
         this.invoiceNumber = invoiceNumber;
         this.issueDate = issueDate;
         this.serviceDate = serviceDate;
@@ -51,6 +52,9 @@ public class Invoice {
         this.organization = organization;
         this.paymentType = paymentType;
         this.invoiceLines = invoiceLines;
+        this.totalNetto = totalNetto;
+        this.totalTax = totalTax;
+        this.totalBrutto = totalBrutto;
     }
 
     public Long getId() {
@@ -115,5 +119,29 @@ public class Invoice {
 
     public void setInvoiceLines(List<InvoiceLines> invoiceLines) {
         this.invoiceLines = invoiceLines;
+    }
+
+    public BigDecimal getTotalNetto() {
+        return totalNetto;
+    }
+
+    public void setTotalNetto(BigDecimal totalNetto) {
+        this.totalNetto = totalNetto;
+    }
+
+    public BigDecimal getTotalTax() {
+        return totalTax;
+    }
+
+    public void setTotalTax(BigDecimal totalTax) {
+        this.totalTax = totalTax;
+    }
+
+    public BigDecimal getTotalBrutto() {
+        return totalBrutto;
+    }
+
+    public void setTotalBrutto(BigDecimal totalBrutto) {
+        this.totalBrutto = totalBrutto;
     }
 }

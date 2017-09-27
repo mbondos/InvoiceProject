@@ -100,6 +100,24 @@ body {
     border-radius: 50%;
 }
 
+
+.table > tfoot > tr > .no-line {
+    border-top: none;
+}
+
+.table > thead > tr > .no-line {
+    border-bottom: none;
+}
+
+.table > tbody > tr > .thick-line {
+    border-top: 2px solid;
+}
+
+.no-border {
+    border: 0;
+    box-shadow: none;
+}
+
 /*Remove spin box on number input*/
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {

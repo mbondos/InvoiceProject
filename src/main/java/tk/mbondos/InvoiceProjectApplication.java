@@ -35,9 +35,9 @@ public class InvoiceProjectApplication {
 							List<InvoiceLines> invoiceLines = new ArrayList<>();
 							Product product = new Product(a, new BigDecimal(100), new BigDecimal(123), 23);
 							productRepository.save(product);
-							InvoiceLines invoiceLines1 = new InvoiceLines(1, product);
-							InvoiceLines invoiceLines2 = new InvoiceLines(2, product);
-							InvoiceLines invoiceLines3 = new InvoiceLines(3, product);
+							InvoiceLines invoiceLines1 = new InvoiceLines(1, product, new BigDecimal(100), new BigDecimal(123), new BigDecimal(23));
+							InvoiceLines invoiceLines2 = new InvoiceLines(1, product, new BigDecimal(100), new BigDecimal(123), new BigDecimal(23));
+							InvoiceLines invoiceLines3 = new InvoiceLines(1, product, new BigDecimal(100), new BigDecimal(123), new BigDecimal(23));
 							invoiceLines.add(invoiceLines1);
 							invoiceLines.add(invoiceLines2);
 							invoiceLines.add(invoiceLines3);
@@ -46,7 +46,7 @@ public class InvoiceProjectApplication {
 									"4299302396", "666 666 666","tras-rubiez123@gmail.com", "website", "61 1090 1014 0000 0712 1981 2874");
 							organizationRepository.save(organization);
 							invoiceRepository.save(new Invoice("01/09/2017", LocalDate.of(2017,5,23), LocalDate.of(2017,5,23), customer,
-									organization, PaymentType.CASH, invoiceLines));
+									organization, PaymentType.CASH, invoiceLines, new BigDecimal(300), new BigDecimal(69), new BigDecimal(369)));
 						});
 
 	}

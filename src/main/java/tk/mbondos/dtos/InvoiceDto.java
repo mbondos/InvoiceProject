@@ -7,6 +7,7 @@ import tk.mbondos.domain.InvoiceLines;
 import tk.mbondos.domain.Organization;
 import tk.mbondos.enums.PaymentType;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -21,6 +22,12 @@ public class InvoiceDto {
     private Organization organization;
     private PaymentType paymentType;
     private List<InvoiceLines> invoiceLines;
+
+    private BigDecimal totalNetto;
+
+    private BigDecimal totalTax;
+
+    private BigDecimal totalBrutto;
 
 
     public InvoiceDto() {
@@ -90,6 +97,30 @@ public class InvoiceDto {
 
     public void setInvoiceLines(List<InvoiceLines> invoiceLines) {
         this.invoiceLines = invoiceLines;
+    }
+
+    public BigDecimal getTotalNetto() {
+        return totalNetto;
+    }
+
+    public void setTotalNetto(BigDecimal totalNetto) {
+        this.totalNetto = totalNetto;
+    }
+
+    public BigDecimal getTotalTax() {
+        return totalTax;
+    }
+
+    public void setTotalTax(BigDecimal totalTax) {
+        this.totalTax = totalTax;
+    }
+
+    public BigDecimal getTotalBrutto() {
+        return totalBrutto;
+    }
+
+    public void setTotalBrutto(BigDecimal totalBrutto) {
+        this.totalBrutto = totalBrutto;
     }
 
     public void validate() {
