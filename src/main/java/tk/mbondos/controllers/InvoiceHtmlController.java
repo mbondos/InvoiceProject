@@ -79,7 +79,6 @@ public class InvoiceHtmlController {
 /*        organization= new OrganizationDto("Organization inc.", new Address("Bakers Street 54", "London", "20-255"),
                 "4299302396", "666 666 666","tras-rubiez123@gmail.com", "website", "61 1090 1014 0000 0712 1981 2874");*/
         organization.validate();
-        organization.setId((long) 1);
         System.out.println(lines.getLinesList().get(0).getProduct().getName());
 
         invoiceService.createInvoice(invoice, customer, organization,lines.getLinesList());
@@ -91,7 +90,7 @@ public class InvoiceHtmlController {
     public @ResponseBody FileSystemResource generatePdf(HttpServletResponse response) {
         Map<String,Object> data = new HashMap<String,Object>();
         File file = null;
-        data.put("invoice", invoiceService.findById(Long.valueOf(1)));
+        data.put("invoice", invoiceService.findById(1L));
         try {
             pdfGeneratorUtil.clearDirectory();
             String download = pdfGeneratorUtil.createPdf("pdftemplate", data);

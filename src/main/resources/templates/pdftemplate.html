@@ -27,8 +27,9 @@
 
         .short {
             margin-bottom: 5px;
-            margin-top: 0px;
+            margin-top: 0;
         }
+
     </style>
 
 </head>
@@ -103,12 +104,7 @@
 
 
     <div class="row">
-        <!--   <div >
-               <div class="panel panel-default">
-                   <div class="panel-heading">
-                       <h3 class="panel-title"><strong>Order summary</strong></h3>
-                   </div>
-                   <div class="panel-body">-->
+
         <hr class="short"/>
         <div class="table-responsive">
             <table class="table table-condensed">
@@ -116,27 +112,28 @@
                 <tr>
 
                     <th>Lp.</th>
-                    <th class="text-center" th:text="#{product.name}">Name</th>
+                    <th width="40%" th:text="#{product.name}">Name</th>
                     <th class="text-center" th:text="#{quantity}">Quantity</th>
-                    <th class="text-center" th:text="#{product.taxRate}">VAT</th>
                     <th class="text-center" th:text="#{product.priceNetto}">Netto</th>
-                    <th class="text-center" th:text="#{product.priceBrutto}">Brutto</th>
-                    <th class="text-right" th:text="#{product.priceTotal}">Total</th>
+                    <th class="text-center" th:text="#{invoice.valueNetto}">Netto Value</th>
+                    <th class="text-center" th:text="#{product.taxRate}">VAT</th>
+                    <th class="text-center" th:text="#{invoice.valueTax}">VAT Value</th>
+                    <th class="text-right" th:text="#{invoice.valueBrutto}">Brutto</th>
                 </tr>
                 </thead>
                 <tbody>
                 <!-- foreach ($order->lineItems as $line) or some such thing here -->
                 <tr th:each="line : ${invoice.invoiceLines}">
                     <td>1</td>
-                    <td class="text-center" th:text="${line.product.name}"></td>
+                    <td th:text="${line.product.name}"></td>
                     <td class="text-center" th:text="${line.quantity}"></td>
-                    <td class="text-center" th:text="${line.product.taxRate}"></td>
                     <td class="text-center" th:text="${line.product.priceNetto}"></td>
-                    <td class="text-center" th:text="${line.product.priceBrutto}"></td>
-                    <td class="text-right" th:text="${line.totalBrutto}"></td>
+                    <td class="text-center" th:text="${line.valueNetto}"></td>
+                    <td class="text-center" th:text="${line.product.taxRate}"></td>
+                    <td class="text-center" th:text="${line.valueTax}"></td>
+                    <td class="text-right" th:text="${line.valueBrutto}"></td>
 
                 </tr>
-
                 </tbody>
                 <tfoot>
                 <tr>
@@ -145,8 +142,9 @@
                     <td class="thick-line"></td>
                     <td class="thick-line"></td>
                     <td class="thick-line"></td>
-                    <td class="thick-line text-center"><strong>Subtotal</strong></td>
-                    <td class="thick-line text-right">$670.99</td>
+                    <td class="thick-line"></td>
+                    <td class="thick-line"></td>
+                    <td class="thick-line"></td>
                 </tr>
                 <tr>
                     <td class="no-line"></td>
@@ -154,30 +152,48 @@
                     <td class="no-line"></td>
                     <td class="no-line"></td>
                     <td class="no-line"></td>
-                    <td class="no-line text-center"><strong>Shipping</strong></td>
-                    <td class="no-line text-right">$15</td>
+                    <td class="no-line"></td>
+                    <td class="no-line"></td>
+                    <td class="no-line"></td>
                 </tr>
-                <tr>
-                    <td class="no-line"></td>
-                    <td class="no-line"></td>
-                    <td class="no-line"></td>
-                    <td class="no-line"></td>
-                    <td class="no-line"></td>
-                    <td class="no-line text-center"><strong>Total</strong></td>
-                    <td class="no-line text-right">$685.99</td>
-                </tr>
+
                 </tfoot>
 
+
             </table>
+            <div class="pull-right col-xs-3">
+                <table class="table">
+                    <tr>
+                        <td class="thick-line "><strong th:text="#{invoice.totalNetto}">Total Netto</strong></td>
+                        <td class="thick-line text-right" th:text="${invoice.totalNetto}"></td>
+                    </tr>
+                    <tr>
+                        <td class="no-line "><strong th:text="#{invoice.totalTax}">Total tax</strong></td>
+                        <td class="no-line text-right" th:text="${invoice.totalTax}"></td>
+                    </tr>
+                    <tr>
+                        <td class="no-line "><strong th:text="#{invoice.totalBrutto}">Total Brutto</strong></td>
+                        <td class="no-line text-right" th:text="${invoice.totalBrutto}"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="navbar-fixed-bottom">
+    <div class="row">
+        <div class="col-xs-4 col-xs-offset-1">
+            .........................................<br/>
+            <small th:text="#{customerSignature}">Customer Signature</small>
+        </div>
+        <div class="col-xs-4 col-xs-offset-2">
+            .........................................<br/>
+            <small th:text="#{sellerSignature}">Seller Signature</small>
         </div>
 
-
-        <!--               </div>
-                   </div>
-               </div>-->
-
-
     </div>
+    </div>
+
+
 </div>
 </body>
 </html>

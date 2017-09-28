@@ -38,15 +38,7 @@ public class ProductHtmlController {
     public String getProducts(Model model) {
         List<Product> products = productService.listAllProducts();
         model.addAttribute("products", products);
-        Map<String,String> data = new HashMap<String,String>();
-        data.put("name", "Max");
-        try {
-            //String filePath = pdfGeneratorUtil.createPdf("pdftemplate", data);
-            //FileSystemResource download = new FileSystemResource(filePath);
-           // model.addAttribute("download", download);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
         return "products/show";
     }
 

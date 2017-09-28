@@ -9,7 +9,7 @@ import java.util.List;
 
 public class InvoiceLinesWrapper {
     @Valid
-    private List<InvoiceLinesDto> linesList = new ArrayList<InvoiceLinesDto>(100);
+    private List<InvoiceLinesDto> linesList = new ArrayList<>(100);
 
     public InvoiceLinesWrapper() {
     }

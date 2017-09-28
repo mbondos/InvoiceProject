@@ -69,6 +69,8 @@ public class InvoiceService {
         Organization organization;
         List<InvoiceLines> invoiceLines = new ArrayList<>();
 
+        //TODO move to own services
+
         for (InvoiceLinesDto linesDto : invoiceLinesDtos) {
             if (linesDto != null
                     && linesDto.getProduct() != null
@@ -90,14 +92,16 @@ public class InvoiceService {
         }
         if (organizationDto.getId() != null) {
             organization = organizationService.findById(organizationDto.getId());
-        } else {
+        } else if (!organizationDto.getName().isEmpty()){
             organization = organizationFactory.create(organizationDto);
             organizationRepository.save(organization);
+        } else {
+            organization = organizationService.findById((long) 1); //TODO default organization functionality
         }
 
         invoice.setInvoiceLines(invoiceLines);
         invoice.setCustomer(customer);
-        invoice.setOrganization(organization); //TODO bind invoice with organization
+        invoice.setOrganization(organization);
         invoiceRepository.save(invoice);
     }
 

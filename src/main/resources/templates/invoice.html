@@ -71,7 +71,7 @@
 
             <form id="dynamic" action="#" th:action="@{/invoices/add}" th:object="${invoice}" th:method="POST">
                 <input type="hidden"
-                       th:field="${organization.id}" name="id" th:value="1"/>
+                       th:field="${organization.id}" name="id"/>
 
                 <!-- Customer -->
                 <div class="row">
