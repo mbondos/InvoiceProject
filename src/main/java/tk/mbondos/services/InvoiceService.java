@@ -22,32 +22,26 @@ import java.util.Map;
 public class InvoiceService {
     private InvoiceRepository invoiceRepository;
     private InvoiceFactory invoiceFactory;
-    private CustomerFactory customerFactory;
-    private CustomerRepository customerRepository;
-    private InvoiceLinesFactory invoiceLinesFactory;
-    private InvoiceLinesRepository invoiceLinesRepository;
-    private ProductRepository productRepository;
-    private OrganizationRepository organizationRepository;
-    private OrganizationService organizationService;
-    private OrganizationFactory organizationFactory;
+    private InvoiceLinesService invoiceLinesService;
 
-    public InvoiceService(InvoiceRepository invoiceRepository, InvoiceFactory invoiceFactory, CustomerFactory customerFactory, CustomerRepository customerRepository, InvoiceLinesFactory invoiceLinesFactory, InvoiceLinesRepository invoiceLinesRepository, ProductRepository productRepository, OrganizationRepository organizationRepository, OrganizationService organizationService, OrganizationFactory organizationFactory) {
+    private OrganizationService organizationService;
+
+    private CustomerService customerService;
+
+
+    public InvoiceService(InvoiceRepository invoiceRepository, InvoiceFactory invoiceFactory, InvoiceLinesService invoiceLinesService, OrganizationService organizationService, CustomerService customerService) {
         this.invoiceRepository = invoiceRepository;
         this.invoiceFactory = invoiceFactory;
-        this.customerFactory = customerFactory;
-        this.customerRepository = customerRepository;
-        this.invoiceLinesFactory = invoiceLinesFactory;
-        this.invoiceLinesRepository = invoiceLinesRepository;
-        this.productRepository = productRepository;
-        this.organizationRepository = organizationRepository;
+        this.invoiceLinesService = invoiceLinesService;
         this.organizationService = organizationService;
-        this.organizationFactory = organizationFactory;
+        this.customerService = customerService;
     }
 
     @Transactional
-    public void createInvoice(InvoiceDto invoiceDto) {
+    public Invoice createInvoice(InvoiceDto invoiceDto) {
         Invoice invoice = invoiceFactory.create(invoiceDto);
         invoiceRepository.save(invoice);
+        return invoice;
     }
 
     @Transactional
@@ -63,41 +57,21 @@ public class InvoiceService {
 
 
     @Transactional
-    public void createInvoice(InvoiceDto invoiceDto, CustomerDto customerDto, OrganizationDto organizationDto, List<InvoiceLinesDto> invoiceLinesDtos) {
+    public void createInvoice(InvoiceDto invoiceDto, CustomerDto customerDto, List<InvoiceLinesDto> invoiceLinesDtos) {
         Invoice invoice = invoiceFactory.create(invoiceDto);
         Customer customer;
         Organization organization;
-        List<InvoiceLines> invoiceLines = new ArrayList<>();
+        List<InvoiceLines> invoiceLines = invoiceLinesService.create(invoiceLinesDtos);
 
-        //TODO move to own services
-
-        for (InvoiceLinesDto linesDto : invoiceLinesDtos) {
-            if (linesDto != null
-                    && linesDto.getProduct() != null
-                    && !linesDto.getProduct().getName().isEmpty() ) {
-
-                invoiceLines.add(invoiceLinesFactory.create(linesDto));
-                Product product = linesDto.getProduct();
-                productRepository.save(product);
-            }
-        }
-        if (invoiceLines.size() != 0)
-            invoiceLinesRepository.save(invoiceLines);
-
+        //Create new or find existing Customer
         if (customerDto.getId() != null) {
-            customer = customerRepository.findOne(customerDto.getId());
+            customer = customerService.findCustomerById(customerDto.getId());
         } else {
-            customer = customerFactory.create(customerDto);
-            customerRepository.save(customer);
+            customer = customerService.createCustomer(customerDto);
         }
-        if (organizationDto.getId() != null) {
-            organization = organizationService.findById(organizationDto.getId());
-        } else if (!organizationDto.getName().isEmpty()){
-            organization = organizationFactory.create(organizationDto);
-            organizationRepository.save(organization);
-        } else {
-            organization = organizationService.findById((long) 1); //TODO default organization functionality
-        }
+
+        organization = organizationService.findById((long) 1); //TODO default organization functionality
+
 
         invoice.setInvoiceLines(invoiceLines);
         invoice.setCustomer(customer);

@@ -21,10 +21,10 @@ public class CustomerService {
     }
 
     @Transactional
-    public void createCustomer(CustomerDto customerDto) {
+    public Customer createCustomer(CustomerDto customerDto) {
         Customer customer = customerFactory.create(customerDto);
-        customerRepository.save(customer);
-
+        Customer save = customerRepository.save(customer);
+        return save;
     }
 
     @Transactional
@@ -33,7 +33,7 @@ public class CustomerService {
     }
 
     @Transactional
-    public Customer listCustomer(Long customerId) {
+    public Customer findCustomerById(Long customerId) {
         return customerRepository.findOne(customerId);
     }
 

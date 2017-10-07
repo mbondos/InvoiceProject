@@ -69,9 +69,10 @@
 
             </div>
 
-            <form id="dynamic" action="#" th:action="@{/invoices/add}" th:object="${invoice}" th:method="POST">
-                <input type="hidden"
-                       th:field="${organization.id}" name="id"/>
+            <form id="dynamic" action="#" th:action="@{/invoices/add}"  th:method="POST">
+
+
+                <input type="hidden" th:field="${customer.id}" id="customerIdHidden" name="customer.id"/>
 
                 <!-- Customer -->
                 <div class="row">
@@ -90,8 +91,6 @@
                                         <i class="fa fa-search" aria-hidden="true"></i>
                                     </div>
                                 </div>
-                                <input type="hidden" id="customerIdHidden" th:value="${customer.id}"
-                                       th:field="${customer.id}" name="id"/>
 
 
                             </div>
@@ -170,15 +169,15 @@
                                 <div class="form-group">
                                     <label for="invoiceNumber" th:text="#{invoice.invoiceNumber}">Invoice number</label>
                                     <input type="text" class="form-control" id="invoiceNumber" autocomplete="off"
-                                           th:field="*{invoiceNumber}"/>
+                                           th:field="${invoice.invoiceNumber}"/>
                                 </div>
 
                                 <div class="form-inline form-group">
                                     <!-- Issue date -->
                                     <label for="issueDate" th:text="#{invoice.issueDate}">Issue date: </label>
                                     <div class="form-group input-group date col-md-4" id="issueDate">
-                                        <input type="text" class="form-control datepicker" th:value="*{issueDate}"
-                                               th:field="*{issueDate}"/>
+                                        <input type="text" class="form-control datepicker" th:value="${invoice.issueDate}"
+                                               th:field="${invoice.issueDate}"/>
                                         <div class="input-group-addon">
                                             <i class="fa fa-calendar" aria-hidden="true"></i>
                                         </div>
@@ -186,8 +185,8 @@
                                     <!-- Service date -->
                                     <label for="serviceDate" th:text="#{invoice.serviceDate}">Service date: </label>
                                     <div class="form-group input-group date col-md-4" id="serviceDate">
-                                        <input type="text" class="form-control datepicker" th:value="*{serviceDate}"
-                                               th:field="*{serviceDate}"/>
+                                        <input type="text" class="form-control datepicker" th:value="${invoice.serviceDate}"
+                                               th:field="${invoice.serviceDate}"/>
                                         <div class="input-group-addon">
                                             <i class="fa fa-calendar" aria-hidden="true"></i>
                                         </div>
@@ -197,7 +196,7 @@
 
                                 <div class="form-inline">
                                     <label for="paymentType" th:text="#{invoice.paymentType}">Payment type: </label>
-                                    <select class="form-control " id="paymentType" th:field="*{paymentType}">
+                                    <select class="form-control " id="paymentType" th:field="${invoice.paymentType}">
                                         <option th:each="type : ${T(tk.mbondos.enums.PaymentType).values()}"
                                                 th:value="${type}"
                                                 th:text="#{'invoice.paymentType.'+${{type}}}">Default
@@ -246,21 +245,26 @@
                                 </td>
                                 <td class="col-md-1">
                                     <input type="number" class="form-control col-md-1" id="quantity" autocomplete="off"
+                                           min="1"
                                            th:attr="data-cell='A'+ (${iter}+1)"
                                            th:field="${lines.linesList[__${iter}__].quantity}"/>
                                 </td>
                                 <td>
-                                    <input type="number" class="form-control" id="tax" autocomplete="off" th:value="23"
-                                           th:attr="data-cell='B'+ (${iter}+1)"
+                                    <input type="number" class="form-control" id="taxRate" name="taxRate" autocomplete="off"
+                                           min="0" max="100"
+                                           th:value="23" th:attr="data-cell='B'+ (${iter}+1)"
                                            th:field="${lines.linesList[__${iter}__].product.taxRate}"/>
+                                    <div class="col-lg-4">
+                                        <span class="label label-danger" th:if="${#fields.hasErrors('${lines.linesList[__${iter}__].product.taxRate}')}" th:errors="${lines.linesList[__${iter}__].product.taxRate}">Title Name Error</span>
+                                    </div>
                                 </td>
                                 <td>
-                                    <input class="form-control input-sm"
+                                    <input type="number" class="form-control input-sm" min="0.00"
                                            autocomplete="off" th:attr="data-cell='C'+ (${iter}+1)" data-format="0[.]00"
                                            th:field="${lines.linesList[__${iter}__].product.priceNetto}"/>
                                 </td>
                                 <td>
-                                    <input type="number" min="0.00" max="10000.00" step="0.01" class="form-control"
+                                    <input type="number" min="0.00"  step="0.01" class="form-control"
                                            autocomplete="off" data-format="0[.]00"
                                            th:attr="data-cell='D'+ (${iter}+1), data-formula='(1+(B'+(${iter}+1)+'/100))*C'+ (${iter}+1)"
                                            th:field="${lines.linesList[__${iter}__].product.priceBrutto}"/>
@@ -306,7 +310,8 @@
                                 <td class="no-line text-center"><strong th:text="#{invoice.valueNetto}">Total
                                     netto</strong></td>
                                 <td class="no-line text-right">
-                                    <input class="form-control no-border" data-cell="G1" data-format="0[.]00" data-formula="SUM(F1:F10)+0"
+                                    <input class="form-control no-border" data-cell="G1" data-format="0[.]00"
+                                           data-formula="SUM(F1:F10)+0"
                                            th:field="${invoice.totalNetto}"/>
                                 </td>
                                 <td class="no-line"></td>
@@ -320,7 +325,8 @@
                                 <td class="no-line text-center"><strong th:text="#{invoice.valueTax}">Tax total</strong>
                                 </td>
                                 <td class="no-line text-right">
-                                    <input class="form-control no-border" data-cell="H1" data-format="0[.]00" data-formula="I1-G1"
+                                    <input class="form-control no-border" data-cell="H1" data-format="0[.]00"
+                                           data-formula="I1-G1"
                                            th:field="${invoice.totalTax}"/>
                                 </td>
                                 <td class="no-line"></td>
@@ -334,7 +340,8 @@
                                 <td class="no-line text-center"><strong th:text="#{invoice.valueBrutto}">Total
                                     brutto</strong></td>
                                 <td class="no-line text-right">
-                                    <input class="form-control no-border" data-cell="I1" data-format="0[.]00" data-formula="SUM(E1:E10)"
+                                    <input class="form-control no-border" data-cell="I1" data-format="0[.]00"
+                                           data-formula="SUM(E1:E10)"
                                            th:field="${invoice.totalBrutto}"/>
                                 </td>
                                 <td class="no-line"></td>
@@ -422,7 +429,6 @@
     });
 
 </script>
-
 
 <script type="text/javascript" th:inline="javascript">
 

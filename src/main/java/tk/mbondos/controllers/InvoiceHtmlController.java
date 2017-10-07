@@ -24,6 +24,7 @@ import tk.mbondos.utils.InvoiceLinesWrapper;
 import tk.mbondos.utils.PdfGeneratorUtil;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,26 +63,29 @@ public class InvoiceHtmlController {
         model.addAttribute("title", "Add Invoice");
         model.addAttribute("invoice", new InvoiceDto());
         model.addAttribute("customer", new CustomerDto());
-        model.addAttribute("organization", new OrganizationDto());
         InvoiceLinesWrapper linesWrapper = new InvoiceLinesWrapper();
-        //linesWrapper.getLinesList().add(0, new InvoiceLines(1337,new Product()));
         model.addAttribute("lines", linesWrapper);
+
         return "invoice";
     }
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public String processAddInvoiceForm(@ModelAttribute CustomerDto customer,
                                         @ModelAttribute InvoiceDto invoice,
-                                        @ModelAttribute InvoiceLinesWrapper lines,
-                                        @ModelAttribute OrganizationDto organization) {
+                                        @Valid @ModelAttribute InvoiceLinesWrapper lines,
+                                        BindingResult bindingResult
+                                        ) {
+
+
+        if (bindingResult.hasErrors()) {
+            return "invoice";
+        }
+
         invoice.validate();
         customer.validate();
-/*        organization= new OrganizationDto("Organization inc.", new Address("Bakers Street 54", "London", "20-255"),
-                "4299302396", "666 666 666","tras-rubiez123@gmail.com", "website", "61 1090 1014 0000 0712 1981 2874");*/
-        organization.validate();
-        System.out.println(lines.getLinesList().get(0).getProduct().getName());
 
-        invoiceService.createInvoice(invoice, customer, organization,lines.getLinesList());
+
+        invoiceService.createInvoice(invoice, customer, lines.getLinesList());
 
         return "redirect:add";
     }

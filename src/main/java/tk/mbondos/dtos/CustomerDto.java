@@ -19,6 +19,7 @@ public class CustomerDto {
         this.nip = nip;
     }
 
+
     public Long getId() {
         return id;
     }
