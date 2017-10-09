@@ -1,11 +1,18 @@
 package tk.mbondos.dtos;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.Min;
 import java.math.BigDecimal;
 
 public class ProductDto {
+    @NotEmpty
     private String name;
+    @Min(0)
     private BigDecimal priceNetto;
+    @Min(0)
     private BigDecimal priceBrutto;
+    @Min(0)
     private int taxRate = 23;
 
     public ProductDto() {

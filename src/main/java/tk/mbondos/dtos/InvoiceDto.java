@@ -16,10 +16,12 @@ import java.util.List;
 
 public class InvoiceDto {
 
-    @NotEmpty(message = "May not be empty!!!1")
+    @NotEmpty
     private String invoiceNumber;
+    @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate issueDate;
+    @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate serviceDate;
     private Customer customer;

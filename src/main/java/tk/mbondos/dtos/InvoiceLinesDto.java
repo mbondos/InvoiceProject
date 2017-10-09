@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import tk.mbondos.domain.Product;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 
@@ -11,9 +12,13 @@ public class InvoiceLinesDto {
 
     @Min(1)
     private int quantity = 1;
+    @NotNull
     private Product product;
+    @Min(0)
     private BigDecimal valueNetto;
+    @Min(0)
     private BigDecimal valueBrutto;
+    @Min(0)
     private BigDecimal valueTax;
 
     public InvoiceLinesDto() {

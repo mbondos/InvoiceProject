@@ -1,15 +1,16 @@
 package tk.mbondos.dtos;
-
-import org.springframework.stereotype.Component;
+import tk.mbondos.annotation.ExistingOrNewCustomer;
 import tk.mbondos.domain.embeddable.Address;
 
-
+@ExistingOrNewCustomer
 public class CustomerDto {
 
     private Long id;
     private String name;
     private Address address;
     private String nip;
+
+
 
     public CustomerDto() {
     }
@@ -54,7 +55,7 @@ public class CustomerDto {
         this.address = address;
     }
 
-    public void validate() {
-
+    public boolean validate() {
+        return true;
     }
 }

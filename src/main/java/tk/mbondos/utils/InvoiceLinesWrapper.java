@@ -11,7 +11,7 @@ import java.util.List;
 
 
 public class InvoiceLinesWrapper {
-    @Valid
+
     private List<InvoiceLinesDto> linesList = new ArrayList<>(100);
 
     public InvoiceLinesWrapper() {

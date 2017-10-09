@@ -34,15 +34,13 @@ import java.util.Map;
 @Controller
 @RequestMapping("/invoices")
 public class InvoiceHtmlController {
-    InvoiceService invoiceService;
-    CustomerService customerService;
-    PdfGeneratorUtil pdfGeneratorUtil;
+    private InvoiceService invoiceService;
+    private PdfGeneratorUtil pdfGeneratorUtil;
 
 
     @Autowired
-    public InvoiceHtmlController(InvoiceService invoiceService, CustomerService customerService, PdfGeneratorUtil pdfGeneratorUtil) {
+    public InvoiceHtmlController(InvoiceService invoiceService, PdfGeneratorUtil pdfGeneratorUtil) {
         this.invoiceService = invoiceService;
-        this.customerService = customerService;
         this.pdfGeneratorUtil = pdfGeneratorUtil;
     }
 
@@ -81,7 +79,7 @@ public class InvoiceHtmlController {
 
 
         if (resultInvoice.hasErrors() || resultCustomer.hasErrors() || resultLines.hasErrors()) {
-            System.out.println("error asd");
+            System.out.println("error asd"); //TODO logger
 
             return "invoice";
         }
