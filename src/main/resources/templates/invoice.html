@@ -152,6 +152,10 @@
 
                             </div>
 
+                            <span class="label label-danger"
+                                  th:if="${#fields.hasErrors('customer')}"
+                                  th:errors="${customer}"/>
+
                         </div>
                     </div>
                 </div>

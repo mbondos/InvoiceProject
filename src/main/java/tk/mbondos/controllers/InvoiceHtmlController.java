@@ -1,6 +1,8 @@
 package tk.mbondos.controllers;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Controller;
@@ -36,7 +38,7 @@ import java.util.Map;
 public class InvoiceHtmlController {
     private InvoiceService invoiceService;
     private PdfGeneratorUtil pdfGeneratorUtil;
-
+    protected final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
     public InvoiceHtmlController(InvoiceService invoiceService, PdfGeneratorUtil pdfGeneratorUtil) {
@@ -79,7 +81,7 @@ public class InvoiceHtmlController {
 
 
         if (resultInvoice.hasErrors() || resultCustomer.hasErrors() || resultLines.hasErrors()) {
-            System.out.println("error asd"); //TODO logger
+            log.info("Invoice form has errors");
 
             return "invoice";
         }
