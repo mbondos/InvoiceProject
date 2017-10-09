@@ -1,5 +1,6 @@
 package tk.mbondos.dtos;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 import tk.mbondos.domain.Customer;
@@ -7,12 +8,15 @@ import tk.mbondos.domain.InvoiceLines;
 import tk.mbondos.domain.Organization;
 import tk.mbondos.enums.PaymentType;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
 
 public class InvoiceDto {
+
+    @NotEmpty(message = "May not be empty!!!1")
     private String invoiceNumber;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate issueDate;

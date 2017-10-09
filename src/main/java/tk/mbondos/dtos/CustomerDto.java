@@ -1,6 +1,8 @@
 package tk.mbondos.dtos;
 
+import org.springframework.stereotype.Component;
 import tk.mbondos.domain.embeddable.Address;
+
 
 public class CustomerDto {
 

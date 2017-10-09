@@ -70,14 +70,19 @@ public class InvoiceHtmlController {
     }
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
-    public String processAddInvoiceForm(@ModelAttribute CustomerDto customer,
-                                        @ModelAttribute InvoiceDto invoice,
-                                        @Valid @ModelAttribute InvoiceLinesWrapper lines,
-                                        BindingResult bindingResult
-                                        ) {
+    public String processAddInvoiceForm(Model model,
+                                        @Valid @ModelAttribute("customer") CustomerDto customer,
+                                        BindingResult resultCustomer,
+                                        @Valid @ModelAttribute("lines") InvoiceLinesWrapper lines,
+                                        BindingResult resultLines,
+                                        @Valid @ModelAttribute("invoice") InvoiceDto invoice,
+                                        BindingResult resultInvoice
+    ) {
 
 
-        if (bindingResult.hasErrors()) {
+        if (resultInvoice.hasErrors() || resultCustomer.hasErrors() || resultLines.hasErrors()) {
+            System.out.println("error asd");
+
             return "invoice";
         }
 
@@ -86,13 +91,13 @@ public class InvoiceHtmlController {
 
 
         invoiceService.createInvoice(invoice, customer, lines.getLinesList());
-
         return "redirect:add";
     }
 
     @RequestMapping(value = "pdf", method = RequestMethod.GET, produces = "application/pdf")
-    public @ResponseBody FileSystemResource generatePdf(HttpServletResponse response) {
-        Map<String,Object> data = new HashMap<String,Object>();
+    public @ResponseBody
+    FileSystemResource generatePdf(HttpServletResponse response) {
+        Map<String, Object> data = new HashMap<String, Object>();
         File file = null;
         data.put("invoice", invoiceService.findById(1L));
         try {

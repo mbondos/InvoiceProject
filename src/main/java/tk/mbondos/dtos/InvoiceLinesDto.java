@@ -1,10 +1,15 @@
 package tk.mbondos.dtos;
 
+import org.springframework.stereotype.Component;
 import tk.mbondos.domain.Product;
 
+import javax.validation.constraints.Min;
 import java.math.BigDecimal;
 
+
 public class InvoiceLinesDto {
+
+    @Min(1)
     private int quantity = 1;
     private Product product;
     private BigDecimal valueNetto;

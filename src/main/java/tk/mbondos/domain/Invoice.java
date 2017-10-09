@@ -1,9 +1,11 @@
 package tk.mbondos.domain;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 import tk.mbondos.enums.PaymentType;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -14,6 +16,8 @@ public class Invoice {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+
+    @NotEmpty(message = "May not be empty!!!")
     private String invoiceNumber;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")

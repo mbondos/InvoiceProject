@@ -1,11 +1,14 @@
 package tk.mbondos.utils;
 
+import org.springframework.stereotype.Component;
 import tk.mbondos.domain.InvoiceLines;
 import tk.mbondos.dtos.InvoiceLinesDto;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+
+
 
 public class InvoiceLinesWrapper {
     @Valid
