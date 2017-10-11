@@ -1,5 +1,7 @@
 package tk.mbondos.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mbondos.domain.*;
@@ -13,6 +15,7 @@ import tk.mbondos.factories.InvoiceLinesFactory;
 import tk.mbondos.factories.OrganizationFactory;
 import tk.mbondos.repositories.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +30,7 @@ public class InvoiceService {
     private OrganizationService organizationService;
 
     private CustomerService customerService;
-
+    protected final Logger log = LoggerFactory.getLogger(getClass());
 
     public InvoiceService(InvoiceRepository invoiceRepository, InvoiceFactory invoiceFactory, InvoiceLinesService invoiceLinesService, OrganizationService organizationService, CustomerService customerService) {
         this.invoiceRepository = invoiceRepository;
@@ -77,6 +80,33 @@ public class InvoiceService {
         invoice.setCustomer(customer);
         invoice.setOrganization(organization);
         invoiceRepository.save(invoice);
+    }
+
+    @Transactional
+    public String getNextInvoiceNumber() {
+        String invoiceNumber = "";
+
+        LocalDate currentDate = LocalDate.now();
+        Invoice maxId = invoiceRepository.findTopByOrderByIdDesc();
+        LocalDate maxIdDate = maxId.getIssueDate();
+
+        if (currentDate.getMonth().equals(maxIdDate.getMonth())
+                && currentDate.getYear() == maxIdDate.getYear()) {
+            int last = Integer.parseInt(maxId.getInvoiceNumber().substring(0,2));
+            log.info("Last invoice number: {}", last);
+            invoiceNumber = String.format("%02d/%02d/%d", ++last, currentDate.getMonthValue(), currentDate.getYear());
+
+
+        } else {
+            invoiceNumber = String.format("%02d/%02d/%d", 1, currentDate.getMonthValue(), currentDate.getYear());
+            log.info("Last invoice not current month");
+        }
+
+
+        log.info("id: {}", maxId.getId());
+        log.info("Invoice number: {}", invoiceNumber);
+
+        return invoiceNumber;
     }
 
 

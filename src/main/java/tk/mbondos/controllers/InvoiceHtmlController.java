@@ -62,6 +62,7 @@ public class InvoiceHtmlController {
     public String displayAddInvoiceForm(Model model) {
         model.addAttribute("title", "Add Invoice");
         model.addAttribute("invoice", new InvoiceDto());
+        model.addAttribute("asd", invoiceService.getNextInvoiceNumber());
         model.addAttribute("customer", new CustomerDto());
         InvoiceLinesWrapper linesWrapper = new InvoiceLinesWrapper();
         model.addAttribute("lines", linesWrapper);

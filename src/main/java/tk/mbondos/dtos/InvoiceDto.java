@@ -9,6 +9,7 @@ import tk.mbondos.domain.Organization;
 import tk.mbondos.enums.PaymentType;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
 public class InvoiceDto {
 
     @NotEmpty
+    @Pattern(regexp = "([0-9][1-9]\\/(0[1-9]|1[0-2])\\/[1-9][0-9][0-9][0-9])")
     private String invoiceNumber;
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")

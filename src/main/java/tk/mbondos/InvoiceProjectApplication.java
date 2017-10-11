@@ -45,7 +45,7 @@ public class InvoiceProjectApplication {
 							Organization organization = new Organization("Organization inc.", new Address("Bakers Street 54", "London", "20-255"),
 									"4299302396", "666 666 666","tras-rubiez123@gmail.com", "website", "61 1090 1014 0000 0712 1981 2874");
 							organizationRepository.save(organization);
-							invoiceRepository.save(new Invoice("01/09/2017", LocalDate.of(2017,5,23), LocalDate.of(2017,5,23), customer,
+							invoiceRepository.save(new Invoice("01/10/2017", LocalDate.of(2017,10,23), LocalDate.of(2017,5,23), customer,
 									organization, PaymentType.CASH, invoiceLines, new BigDecimal(300), new BigDecimal(69), new BigDecimal(369)));
 						});
 
