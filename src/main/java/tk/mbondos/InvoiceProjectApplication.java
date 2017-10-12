@@ -27,7 +27,7 @@ public class InvoiceProjectApplication {
 								  OrganizationRepository organizationRepository, InvoiceLinesRepository invoiceLinesRepository,
 								  ProductRepository productRepository) {
 		return (evt) -> Arrays.asList(
-				"John Jones,Jonny Wiertara,Rebeca Williams".split(","))
+				"John Jones,Jonny Wiertara,Rebeca Williams, John Doe, Jane Doe".split(","))
 				.forEach(
 						a -> {
 							Customer customer = new Customer(a, new Address("ul. Lubartowska 54", "Lublin", "20-256"), "1526939481");

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>InvoiceProject</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.7/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/3.2.0/jquery.min.js"
+            th:src="@{/webjars/jquery/3.2.0/jquery.min.js}"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            th:src="@{/js/bootstrap.min.js}" type='text/javascript'></script>
+    <link href="../static/css/style.css"
+          th:href="@{css/style.css}" rel="stylesheet" media="screen"/>
+
+    <!--Font Awesome-->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+          rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+          crossorigin="anonymous"/>
+
+    <!-- Thymeleaf replace -->
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js" th:if="false"></script>
+    <script src="http://blackpeppersoftware.github.io/thymeleaf-fragment.js/thymeleaf-fragment.js"
+            defer="defer" th:if="false"></script>
+
+    <!-- Data Tables -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css"/>
+
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+
+
+</head>
+
+<body>
+
+<nav th:replace="fragments :: navbar"></nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div th:replace="fragments :: sidebar('invoiceShow')"></div>
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="row">
+                <h2 th:text="${title}">Default Title</h2>
+            </div>
+            <div class="row">
+                <a href="/invoices/add"><p th:text="#{invoice.add}"/></a>
+            </div>
+
+            <div class="row">
+                <p th:unless="${invoices} and ${invoices.size()}">no invoices</p>
+
+                <table class="table table-hover" id="invoiceList">
+                    <thead>
+                    <tr>
+                        <th>Lp</th>
+                        <th>Invoice number</th>
+                        <th>Issue date</th>
+                        <th>Customer</th>
+                        <th>totalNetto</th>
+                        <th>totalBrutto</th>
+
+                        <th class="col-md-1 text-center" th:text="#{edit}">Edit</th>
+                        <th class="col-md-1 text-center" th:text="#{remove}">Remove</th>
+
+                    </tr>
+
+                    </thead>
+
+                    <tbody>
+                    <tr th:each="invoice, iter : ${invoices}">
+                        <td th:text="${iter.index} + 1">Id</td>
+                        <td th:text="${invoice.invoiceNumber}">Id</td>
+                        <td th:text="${invoice.issueDate}">Date</td>
+                        <td th:text="${invoice.customer.name}">Customer</td>
+                        <td th:text="${invoice.totalNetto}">Netto</td>
+                        <td th:text="${invoice.totalBrutto}">Brutto</td>
+
+                        <td class="text-center">
+                            <button class="btn-edit btn btn-sm btn-primary"><i class="fa fa-pencil"
+                                                                               aria-hidden="true"></i>
+                            </button>
+                        </td>
+
+                        <td class="text-center">
+                            <button class="btn-remove btn btn-sm btn-danger"
+                                    data-href="/delete.php?id=54" data-toggle="modal" data-target="#confirm-delete">
+                                <i class="fa fa-times fa-fw"></i>
+                            </button>
+                        </td>
+
+
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            Confirm delete
+                        </div>
+                        <div class="modal-body">
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <a class="btn btn-danger btn-ok">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#invoiceList').DataTable({
+            scrollY:        '50vh',
+            scrollCollapse: true,
+            paging:         false,
+            info:     false
+        });
+        $('#confirm-delete').on('show.bs.modal', function (e) {
+            $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+        });
+    });
+
+</script>
+
+
+</body>
+</html>

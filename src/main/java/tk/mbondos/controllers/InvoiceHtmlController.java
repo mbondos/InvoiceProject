@@ -48,21 +48,21 @@ public class InvoiceHtmlController {
 
 
 
-/*
+
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String getInvoices(Model model) {
         List<Invoice> invoices = invoiceService.listAllInvoices();
         model.addAttribute("invoices", invoices);
         model.addAttribute("title", "My Invoices");
-        return "invoices/show";
+        return "invoice/show";
     }
-*/
+
 
     @RequestMapping(value = "add", method = RequestMethod.GET)
     public String displayAddInvoiceForm(Model model) {
         model.addAttribute("title", "Add Invoice");
         model.addAttribute("invoice", new InvoiceDto());
-        model.addAttribute("asd", invoiceService.getNextInvoiceNumber());
+        model.addAttribute("nextInvoiceNumber", invoiceService.getNextInvoiceNumber());
         model.addAttribute("customer", new CustomerDto());
         InvoiceLinesWrapper linesWrapper = new InvoiceLinesWrapper();
         model.addAttribute("lines", linesWrapper);

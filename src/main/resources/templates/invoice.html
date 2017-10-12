@@ -57,7 +57,7 @@
 <div class="container-fluid">
 
     <div class="row">
-        <div th:replace="fragments :: sidebar('invoice')"></div>
+        <div th:replace="fragments :: sidebar('invoiceAdd')"></div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
             <!--FORM-->
@@ -252,7 +252,7 @@
                                 <th class="col-md-1" th:text="#{product.priceNetto}">Netto</th>
                                 <th class="col-md-1" th:text="#{product.priceBrutto}">Brutto</th>
                                 <th class="col-md-1" th:text="#{product.priceTotal}">Total</th>
-                                <th class="col-md-1" th:text="#{remove}">Remove</th>
+                                <th class="col-md-1 text-center" th:text="#{remove}">Remove</th>
                             </tr>
                             <tbody id="itemlist">
                             <tr class="table-hover" th:style="${iter}&lt;1 ? 'display:float' : 'display:none'"
@@ -483,6 +483,9 @@
 
     $(document).ready(function () {
         var i = 1;
+        /*<![CDATA[*/
+        $('#invoiceNumber').val([[${nextInvoiceNumber}]]);
+        /*]]>*/
 
         numerate();
         $('#newRow').click(function (e) {
