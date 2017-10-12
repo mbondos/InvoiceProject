@@ -213,19 +213,6 @@
                                               th:errors="${invoice.serviceDate}"/>
 
                                 </div>
-            <!--                    <div class="row">
-                                    <div class="col-md-4">
-                                        <span class="label label-danger"
-                                              th:if="${#fields.hasErrors('invoice.issueDate')}"
-                                              th:errors="${invoice.issueDate}"/>
-                                    </div>
-                                    <div class="col-md-4 col-md-offset-2">
-                                        <span class="label label-danger"
-                                              th:if="${#fields.hasErrors('invoice.serviceDate')}"
-                                              th:errors="${invoice.serviceDate}"/>
-                                    </div>
-                                </div>-->
-
 
                                 <div class="form-inline">
                                     <label for="paymentType" th:text="#{invoice.paymentType}">Payment type: </label>
@@ -271,7 +258,7 @@
                             <tr class="table-hover" th:style="${iter}&lt;1 ? 'display:float' : 'display:none'"
                                 th:each="iter : ${#numbers.sequence(0, 10)}"
                                 th:id="'row' + ${iter}">
-                                <td th:text="${iter}+1"></td>
+                                <td class="numerate"></td>
                                 <td>
                                     <input type="text" class="form-control"
                                            th:field="${lines.linesList[__${iter}__].product.name}"/>
@@ -497,19 +484,28 @@
     $(document).ready(function () {
         var i = 1;
 
-
+        numerate();
         $('#newRow').click(function (e) {
             e.preventDefault();
             $('#row' + i).show();
             i++;
+            numerate();
 
 
         });
         $('#itemlist').on('click', '.btn-remove', function () {
             $(this).parent().parent().remove();
+            numerate();
             $form.calx('update');
             $form.calx('getCell', 'G1').calculate();
         });
+
+
+        function numerate() {
+
+        $('#itemlist').find('tr').each(function (counter) {
+            $(this).find('.numerate').text(++counter);
+        })}
 
 
     });
