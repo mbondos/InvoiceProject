@@ -1,6 +1,7 @@
 package tk.mbondos.controllers;
 
 
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,12 +42,13 @@ public class InvoiceHtmlController {
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
+    private ModelMapper modelMapper;
+
+    @Autowired
     public InvoiceHtmlController(InvoiceService invoiceService, PdfGeneratorUtil pdfGeneratorUtil) {
         this.invoiceService = invoiceService;
         this.pdfGeneratorUtil = pdfGeneratorUtil;
     }
-
-
 
 
     @RequestMapping(value = "", method = RequestMethod.GET)
@@ -64,10 +66,9 @@ public class InvoiceHtmlController {
         return "redirect:/invoices";
     }
 
-
+    //GET add page
     @RequestMapping(value = "add", method = RequestMethod.GET)
     public String displayAddInvoiceForm(Model model) {
-        model.addAttribute("title", "Add Invoice");
         model.addAttribute("invoice", new InvoiceDto());
         model.addAttribute("nextInvoiceNumber", invoiceService.getNextInvoiceNumber());
         model.addAttribute("customer", new CustomerDto());
@@ -77,19 +78,40 @@ public class InvoiceHtmlController {
         return "invoice";
     }
 
-/*
+    //GET edit page
     @RequestMapping(value = "{invoiceId}/edit", method = RequestMethod.GET)
-    public String displayEditInvoiceForm(@PathVariable Long invoiceId, Model model) {
-        model.addAttribute("title", "Edit Invoice");
-        Invoice invoice = invoiceService.findById(invoiceId);
+    public String displayEditInvoiceForm(Model model, @PathVariable Long invoiceId) {
+        InvoiceDto invoice = modelMapper.map(invoiceService.findById(invoiceId), InvoiceDto.class);
         model.addAttribute("invoice", invoice);
         model.addAttribute("customer", invoice.getCustomer());
-        InvoiceLinesWrapper linesWrapper = new InvoiceLinesWrapper();
+        InvoiceLinesWrapper linesWrapper = new InvoiceLinesWrapper(invoice.getInvoiceLines());
         model.addAttribute("lines", linesWrapper);
+        //model.addAttribute("editedInvoiceId", invoiceId);
 
-        return "invoice";
+        return "invoice/edit";
     }
-*/
+
+    @RequestMapping(value = "{invoiceId}/edit", method = RequestMethod.POST)
+    public String processEditInvoiceForm(Model model, @PathVariable Long invoiceId,
+                                         @Valid @ModelAttribute("customer") CustomerDto customer,
+                                         BindingResult resultCustomer,
+                                         @Valid @ModelAttribute("lines") InvoiceLinesWrapper lines,
+                                         BindingResult resultLines,
+                                         @Valid @ModelAttribute("invoice") InvoiceDto invoice,
+                                         BindingResult resultInvoice
+    ) {
+
+
+        if (resultInvoice.hasErrors() || resultCustomer.hasErrors() || resultLines.hasErrors()) {
+            log.info("Invoice edit form has errors");
+
+            return "invoice/{invoiceId}/edit";
+        }
+
+        invoiceService.createInvoice(invoice, customer, lines.getLinesList());
+        //invoiceService.updateInvoice(invoice, customer, lines.getLinesList());
+        return "redirect:/invoices";
+    }
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public String processAddInvoiceForm(Model model,
@@ -103,7 +125,7 @@ public class InvoiceHtmlController {
 
 
         if (resultInvoice.hasErrors() || resultCustomer.hasErrors() || resultLines.hasErrors()) {
-            log.info("Invoice form has errors");
+            log.info("Invoice add form has errors");
 
             return "invoice";
         }

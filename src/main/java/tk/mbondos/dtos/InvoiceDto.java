@@ -12,7 +12,7 @@ import java.util.List;
 
 
 public class InvoiceDto {
-
+    private Long id;
     @NotEmpty
     @Pattern(regexp = "([0-9][1-9]\\/(0[1-9]|1[0-2])\\/[1-9][0-9][0-9][0-9])")
     private String invoiceNumber;
@@ -37,6 +37,20 @@ public class InvoiceDto {
     public InvoiceDto() {
     }
 
+    public InvoiceDto(Long id, String invoiceNumber, LocalDate issueDate, LocalDate serviceDate, CustomerDto customer, OrganizationDto organization, PaymentType paymentType, List<InvoiceLinesDto> invoiceLines, BigDecimal totalNetto, BigDecimal totalTax, BigDecimal totalBrutto) {
+        this.id = id;
+        this.invoiceNumber = invoiceNumber;
+        this.issueDate = issueDate;
+        this.serviceDate = serviceDate;
+        this.customer = customer;
+        this.organization = organization;
+        this.paymentType = paymentType;
+        this.invoiceLines = invoiceLines;
+        this.totalNetto = totalNetto;
+        this.totalTax = totalTax;
+        this.totalBrutto = totalBrutto;
+    }
+
     public InvoiceDto(String invoiceNumber, LocalDate issueDate, LocalDate serviceDate, CustomerDto customer, OrganizationDto organization, PaymentType paymentType, List<InvoiceLinesDto> invoiceLines) {
         this.invoiceNumber = invoiceNumber;
         this.issueDate = issueDate;
@@ -45,6 +59,14 @@ public class InvoiceDto {
         this.organization = organization;
         this.paymentType = paymentType;
         this.invoiceLines = invoiceLines;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getInvoiceNumber() {

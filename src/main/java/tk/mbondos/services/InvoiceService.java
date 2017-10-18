@@ -79,6 +79,14 @@ public class InvoiceService {
     }
 
     @Transactional
+    public void updateInvoice(InvoiceDto invoiceDto, CustomerDto customerDto, List<InvoiceLinesDto> invoiceLinesDtos) {
+        invoiceDto.setCustomer(customerDto);
+        invoiceDto.setInvoiceLines(invoiceLinesDtos);
+        Invoice invoice = modelMapper.map(invoiceDto, Invoice.class);
+        invoiceRepository.save(invoice);
+    }
+
+    @Transactional
     public void deleteInvoice(Long invoiceId) {
         invoiceRepository.delete(invoiceId);
     }

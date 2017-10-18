@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 
 public class InvoiceLinesDto {
-
+    private Long id;
     @Min(1)
     private int quantity = 1;
     @NotNull
@@ -21,12 +21,29 @@ public class InvoiceLinesDto {
     public InvoiceLinesDto() {
     }
 
+    public InvoiceLinesDto(Long id, int quantity, ProductDto product, BigDecimal valueNetto, BigDecimal valueBrutto, BigDecimal valueTax) {
+        this.id = id;
+        this.quantity = quantity;
+        this.product = product;
+        this.valueNetto = valueNetto;
+        this.valueBrutto = valueBrutto;
+        this.valueTax = valueTax;
+    }
+
     public InvoiceLinesDto(int quantity, ProductDto product, BigDecimal valueNetto, BigDecimal valueBrutto, BigDecimal valueTax) {
         this.quantity = quantity;
         this.product = product;
         this.valueNetto = valueNetto;
         this.valueBrutto = valueBrutto;
         this.valueTax = valueTax;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public int getQuantity() {
