@@ -83,6 +83,11 @@ public class InvoiceService {
     }
 
     @Transactional
+    public void deleteInvoice(Long invoiceId) {
+        invoiceRepository.delete(invoiceId);
+    }
+
+    @Transactional
     public String getNextInvoiceNumber() {
         String invoiceNumber = "";
 

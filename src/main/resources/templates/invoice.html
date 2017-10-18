@@ -173,6 +173,7 @@
                                 <div class="form-group">
                                     <label for="invoiceNumber" th:text="#{invoice.invoiceNumber}">Invoice number</label>
                                     <input type="text" class="form-control" id="invoiceNumber" autocomplete="off"
+                                           th:value="${invoice.invoiceNumber}"
                                            th:field="${invoice.invoiceNumber}" />
                                     <span class="label label-danger"
                                           th:if="${#fields.hasErrors('invoice.invoiceNumber')}"

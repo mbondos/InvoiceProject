@@ -57,6 +57,13 @@ public class InvoiceHtmlController {
         return "invoice/show";
     }
 
+    @RequestMapping(value = "{invoiceId}/delete", method = RequestMethod.GET)
+    public String deleteInvoice(@PathVariable Long invoiceId) {
+        invoiceService.deleteInvoice(invoiceId);
+
+        return "redirect:/invoices";
+    }
+
 
     @RequestMapping(value = "add", method = RequestMethod.GET)
     public String displayAddInvoiceForm(Model model) {
@@ -69,6 +76,20 @@ public class InvoiceHtmlController {
 
         return "invoice";
     }
+
+/*
+    @RequestMapping(value = "{invoiceId}/edit", method = RequestMethod.GET)
+    public String displayEditInvoiceForm(@PathVariable Long invoiceId, Model model) {
+        model.addAttribute("title", "Edit Invoice");
+        Invoice invoice = invoiceService.findById(invoiceId);
+        model.addAttribute("invoice", invoice);
+        model.addAttribute("customer", invoice.getCustomer());
+        InvoiceLinesWrapper linesWrapper = new InvoiceLinesWrapper();
+        model.addAttribute("lines", linesWrapper);
+
+        return "invoice";
+    }
+*/
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public String processAddInvoiceForm(Model model,
@@ -95,12 +116,12 @@ public class InvoiceHtmlController {
         return "redirect:add";
     }
 
-    @RequestMapping(value = "pdf", method = RequestMethod.GET, produces = "application/pdf")
+    @RequestMapping(value = "{invoiceId}/pdf", method = RequestMethod.GET, produces = "application/pdf")
     public @ResponseBody
-    FileSystemResource generatePdf(HttpServletResponse response) {
+    FileSystemResource generatePdf(@PathVariable Long invoiceId, HttpServletResponse response) {
         Map<String, Object> data = new HashMap<String, Object>();
         File file = null;
-        data.put("invoice", invoiceService.findById(1L));
+        data.put("invoice", invoiceService.findById(invoiceId));
         try {
             pdfGeneratorUtil.clearDirectory();
             String download = pdfGeneratorUtil.createPdf("pdftemplate", data);

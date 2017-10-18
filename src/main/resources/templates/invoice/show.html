@@ -13,24 +13,31 @@
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
             th:src="@{/js/bootstrap.min.js}" type='text/javascript'></script>
-    <link href="../static/css/style.css"
-          th:href="@{css/style.css}" rel="stylesheet" media="screen"/>
+
 
     <!--Font Awesome-->
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
           rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
           crossorigin="anonymous"/>
 
-    <!-- Thymeleaf replace -->
-    <script src="https://code.jquery.com/jquery-2.1.4.min.js" th:if="false"></script>
-    <script src="http://blackpeppersoftware.github.io/thymeleaf-fragment.js/thymeleaf-fragment.js"
-            defer="defer" th:if="false"></script>
-
     <!-- Data Tables -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css"/>
 
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+
+
+    <link href="../static/css/style.css"
+          th:href="@{css/style.css}" rel="stylesheet" media="screen"/>
+
+    <!-- Thymeleaf replace -->
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js" th:if="false"></script>
+    <script src="http://blackpeppersoftware.github.io/thymeleaf-fragment.js/thymeleaf-fragment.js"
+            defer="defer" th:if="false"></script>
+
+
+
+
 
 
 </head>
@@ -54,7 +61,7 @@
             <div class="row">
                 <p th:unless="${invoices} and ${invoices.size()}">no invoices</p>
 
-                <table class="table table-hover" id="invoiceList">
+                <table class="table table-bordered table-striped" id="invoiceList">
                     <thead>
                     <tr>
                         <th>Lp</th>
@@ -63,12 +70,10 @@
                         <th>Customer</th>
                         <th>totalNetto</th>
                         <th>totalBrutto</th>
-
                         <th class="col-md-1 text-center" th:text="#{edit}">Edit</th>
                         <th class="col-md-1 text-center" th:text="#{remove}">Remove</th>
 
                     </tr>
-
                     </thead>
 
                     <tbody>
@@ -77,9 +82,8 @@
                         <td th:text="${invoice.invoiceNumber}">Id</td>
                         <td th:text="${invoice.issueDate}">Date</td>
                         <td th:text="${invoice.customer.name}">Customer</td>
-                        <td th:text="${invoice.totalNetto}">Netto</td>
-                        <td th:text="${invoice.totalBrutto}">Brutto</td>
-
+                        <td th:text="${invoice.totalNetto}" class="no-sort">Netto</td>
+                        <td th:text="${invoice.totalBrutto}" class="no-sort">Brutto</td>
                         <td class="text-center">
                             <button class="btn-edit btn btn-sm btn-primary"><i class="fa fa-pencil"
                                                                                aria-hidden="true"></i>
@@ -88,7 +92,7 @@
 
                         <td class="text-center">
                             <button class="btn-remove btn btn-sm btn-danger"
-                                    data-href="/delete.php?id=54" data-toggle="modal" data-target="#confirm-delete">
+                                    th:attr="data-href='/invoices/'+${invoice.id}+'/delete'"  data-toggle="modal" data-target="#confirm-delete">
                                 <i class="fa fa-times fa-fw"></i>
                             </button>
                         </td>
@@ -126,11 +130,19 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
+
+
         $('#invoiceList').DataTable({
             scrollY:        '50vh',
             scrollCollapse: true,
             paging:         false,
-            info:     false
+            info:     false,
+
+            columnDefs: [ {
+                /*Disable sorting for buttons*/
+                targets  : [6,7],
+                orderable: false
+            }]
         });
         $('#confirm-delete').on('show.bs.modal', function (e) {
             $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));

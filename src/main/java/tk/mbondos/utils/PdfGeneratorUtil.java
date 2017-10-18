@@ -1,5 +1,7 @@
 package tk.mbondos.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Component;
@@ -17,8 +19,11 @@ import java.util.UUID;
 
 @Component
 public class PdfGeneratorUtil {
+    protected final Logger log = LoggerFactory.getLogger(getClass());
+
     @Autowired
     private TemplateEngine templateEngine;
+
     public String createPdf(String templateName, Map map) throws Exception {
         Assert.notNull(templateName, "The templateName can not be null");
         Context context = new Context();
@@ -42,7 +47,7 @@ public class PdfGeneratorUtil {
             renderer.layout();
             renderer.createPDF(os, false);
             renderer.finishPDF();
-            System.out.println("PDF created successfully");
+            log.info("PDF created successfully");
 
             return outputFile.getPath();
         }
