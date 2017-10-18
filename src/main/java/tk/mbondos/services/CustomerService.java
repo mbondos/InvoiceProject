@@ -1,10 +1,10 @@
 package tk.mbondos.services;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mbondos.domain.Customer;
 import tk.mbondos.dtos.CustomerDto;
-import tk.mbondos.factories.CustomerFactory;
 import tk.mbondos.repositories.CustomerRepository;
 
 import java.util.List;
@@ -12,17 +12,17 @@ import java.util.List;
 @Service
 public class CustomerService {
     private CustomerRepository customerRepository;
-    private CustomerFactory customerFactory;
+    private ModelMapper modelMapper;
 
 
-    public CustomerService(CustomerRepository customerRepository, CustomerFactory customerFactory) {
+    public CustomerService(CustomerRepository customerRepository, ModelMapper modelMapper) {
         this.customerRepository = customerRepository;
-        this.customerFactory = customerFactory;
+        this.modelMapper = modelMapper;
     }
 
     @Transactional
     public Customer createCustomer(CustomerDto customerDto) {
-        Customer customer = customerFactory.create(customerDto);
+        Customer customer = modelMapper.map(customerDto, Customer.class);
         Customer save = customerRepository.save(customer);
         return save;
     }

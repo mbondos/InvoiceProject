@@ -1,5 +1,6 @@
 package tk.mbondos.services;
 
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -8,41 +9,36 @@ import tk.mbondos.domain.*;
 import tk.mbondos.dtos.CustomerDto;
 import tk.mbondos.dtos.InvoiceDto;
 import tk.mbondos.dtos.InvoiceLinesDto;
-import tk.mbondos.dtos.OrganizationDto;
-import tk.mbondos.factories.CustomerFactory;
-import tk.mbondos.factories.InvoiceFactory;
-import tk.mbondos.factories.InvoiceLinesFactory;
-import tk.mbondos.factories.OrganizationFactory;
+
 import tk.mbondos.repositories.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.Map;
+
 
 @Service
 public class InvoiceService {
     private InvoiceRepository invoiceRepository;
-    private InvoiceFactory invoiceFactory;
     private InvoiceLinesService invoiceLinesService;
-
     private OrganizationService organizationService;
-
     private CustomerService customerService;
+
+    private ModelMapper modelMapper;
+
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
-    public InvoiceService(InvoiceRepository invoiceRepository, InvoiceFactory invoiceFactory, InvoiceLinesService invoiceLinesService, OrganizationService organizationService, CustomerService customerService) {
+    public InvoiceService(InvoiceRepository invoiceRepository, InvoiceLinesService invoiceLinesService, OrganizationService organizationService, CustomerService customerService, ModelMapper modelMapper) {
         this.invoiceRepository = invoiceRepository;
-        this.invoiceFactory = invoiceFactory;
         this.invoiceLinesService = invoiceLinesService;
         this.organizationService = organizationService;
         this.customerService = customerService;
+        this.modelMapper = modelMapper;
     }
 
     @Transactional
     public Invoice createInvoice(InvoiceDto invoiceDto) {
-        Invoice invoice = invoiceFactory.create(invoiceDto);
+        Invoice invoice = modelMapper.map(invoiceDto, Invoice.class);
         invoiceRepository.save(invoice);
         return invoice;
     }
@@ -61,7 +57,7 @@ public class InvoiceService {
 
     @Transactional
     public void createInvoice(InvoiceDto invoiceDto, CustomerDto customerDto, List<InvoiceLinesDto> invoiceLinesDtos) {
-        Invoice invoice = invoiceFactory.create(invoiceDto);
+        Invoice invoice = modelMapper.map(invoiceDto, Invoice.class);
         Customer customer;
         Organization organization;
         List<InvoiceLines> invoiceLines = invoiceLinesService.create(invoiceLinesDtos);
@@ -73,7 +69,7 @@ public class InvoiceService {
             customer = customerService.createCustomer(customerDto);
         }
 
-        organization = organizationService.findById((long) 1); //TODO default organization functionality
+        organization = organizationService.findById(1L); //TODO default organization functionality
 
 
         invoice.setInvoiceLines(invoiceLines);

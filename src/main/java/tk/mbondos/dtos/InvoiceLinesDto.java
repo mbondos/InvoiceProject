@@ -1,8 +1,5 @@
 package tk.mbondos.dtos;
 
-import org.springframework.stereotype.Component;
-import tk.mbondos.domain.Product;
-
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -13,7 +10,7 @@ public class InvoiceLinesDto {
     @Min(1)
     private int quantity = 1;
     @NotNull
-    private Product product;
+    private ProductDto product;
     @Min(0)
     private BigDecimal valueNetto;
     @Min(0)
@@ -24,7 +21,7 @@ public class InvoiceLinesDto {
     public InvoiceLinesDto() {
     }
 
-    public InvoiceLinesDto(int quantity, Product product, BigDecimal valueNetto, BigDecimal valueBrutto, BigDecimal valueTax) {
+    public InvoiceLinesDto(int quantity, ProductDto product, BigDecimal valueNetto, BigDecimal valueBrutto, BigDecimal valueTax) {
         this.quantity = quantity;
         this.product = product;
         this.valueNetto = valueNetto;
@@ -40,11 +37,11 @@ public class InvoiceLinesDto {
         this.quantity = quantity;
     }
 
-    public Product getProduct() {
+    public ProductDto getProduct() {
         return product;
     }
 
-    public void setProduct(Product product) {
+    public void setProduct(ProductDto product) {
         this.product = product;
     }
 

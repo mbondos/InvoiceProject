@@ -2,10 +2,6 @@ package tk.mbondos.dtos;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.stereotype.Component;
-import tk.mbondos.domain.Customer;
-import tk.mbondos.domain.InvoiceLines;
-import tk.mbondos.domain.Organization;
 import tk.mbondos.enums.PaymentType;
 
 import javax.validation.constraints.NotNull;
@@ -26,10 +22,10 @@ public class InvoiceDto {
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate serviceDate;
-    private Customer customer;
-    private Organization organization;
+    private CustomerDto customer;
+    private OrganizationDto organization;
     private PaymentType paymentType;
-    private List<InvoiceLines> invoiceLines;
+    private List<InvoiceLinesDto> invoiceLines;
 
     private BigDecimal totalNetto;
 
@@ -41,7 +37,7 @@ public class InvoiceDto {
     public InvoiceDto() {
     }
 
-    public InvoiceDto(String invoiceNumber, LocalDate issueDate, LocalDate serviceDate, Customer customer, Organization organization, PaymentType paymentType, List<InvoiceLines> invoiceLines) {
+    public InvoiceDto(String invoiceNumber, LocalDate issueDate, LocalDate serviceDate, CustomerDto customer, OrganizationDto organization, PaymentType paymentType, List<InvoiceLinesDto> invoiceLines) {
         this.invoiceNumber = invoiceNumber;
         this.issueDate = issueDate;
         this.serviceDate = serviceDate;
@@ -75,19 +71,19 @@ public class InvoiceDto {
         this.serviceDate = serviceDate;
     }
 
-    public Customer getCustomer() {
+    public CustomerDto getCustomer() {
         return customer;
     }
 
-    public void setCustomer(Customer customer) {
+    public void setCustomer(CustomerDto customer) {
         this.customer = customer;
     }
 
-    public Organization getOrganization() {
+    public OrganizationDto getOrganization() {
         return organization;
     }
 
-    public void setOrganization(Organization organization) {
+    public void setOrganization(OrganizationDto organization) {
         this.organization = organization;
     }
 
@@ -99,11 +95,11 @@ public class InvoiceDto {
         this.paymentType = paymentType;
     }
 
-    public List<InvoiceLines> getInvoiceLines() {
+    public List<InvoiceLinesDto> getInvoiceLines() {
         return invoiceLines;
     }
 
-    public void setInvoiceLines(List<InvoiceLines> invoiceLines) {
+    public void setInvoiceLines(List<InvoiceLinesDto> invoiceLines) {
         this.invoiceLines = invoiceLines;
     }
 

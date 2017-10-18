@@ -1,11 +1,12 @@
 package tk.mbondos.services;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mbondos.domain.Product;
 import tk.mbondos.dtos.ProductDto;
-import tk.mbondos.factories.ProductFactory;
+
 import tk.mbondos.repositories.ProductRepository;
 
 import java.util.List;
@@ -13,17 +14,16 @@ import java.util.List;
 @Service
 public class ProductService {
     private ProductRepository productRepository;
-    private ProductFactory productFactory;
+    private ModelMapper modelMapper;
 
-    @Autowired
-    public ProductService(ProductRepository productRepository, ProductFactory productFactory) {
+    public ProductService(ProductRepository productRepository, ModelMapper modelMapper) {
         this.productRepository = productRepository;
-        this.productFactory = productFactory;
+        this.modelMapper = modelMapper;
     }
 
     @Transactional
     public void createProduct(ProductDto productDto) {
-        Product product = productFactory.create(productDto);
+        Product product = modelMapper.map(productDto, Product.class);
         productRepository.save(product);
     }
 

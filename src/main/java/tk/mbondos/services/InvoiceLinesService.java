@@ -1,10 +1,10 @@
 package tk.mbondos.services;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mbondos.domain.InvoiceLines;
 import tk.mbondos.dtos.InvoiceLinesDto;
-import tk.mbondos.factories.InvoiceLinesFactory;
 import tk.mbondos.repositories.InvoiceLinesRepository;
 import tk.mbondos.repositories.ProductRepository;
 
@@ -13,15 +13,14 @@ import java.util.List;
 
 @Service
 public class InvoiceLinesService{
-
-    private InvoiceLinesFactory invoiceLinesFactory;
     private ProductRepository productRepository;
     private InvoiceLinesRepository invoiceLinesRepository;
+    private ModelMapper modelMapper;
 
-    public InvoiceLinesService(InvoiceLinesFactory invoiceLinesFactory, ProductRepository productRepository, InvoiceLinesRepository invoiceLinesRepository) {
-        this.invoiceLinesFactory = invoiceLinesFactory;
+    public InvoiceLinesService(ProductRepository productRepository, InvoiceLinesRepository invoiceLinesRepository, ModelMapper modelMapper) {
         this.productRepository = productRepository;
         this.invoiceLinesRepository = invoiceLinesRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Transactional
@@ -33,8 +32,9 @@ public class InvoiceLinesService{
                     && lineDto.getProduct() != null
                     && !lineDto.getProduct().getName().isEmpty() ) {
 
-                invoiceLines.add(invoiceLinesFactory.create(lineDto));
-                productRepository.save(lineDto.getProduct());
+                InvoiceLines lines = modelMapper.map(lineDto, InvoiceLines.class);
+                invoiceLines.add(lines);
+                productRepository.save(lines.getProduct());
             }
         }
 
