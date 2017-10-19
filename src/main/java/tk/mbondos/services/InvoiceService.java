@@ -80,9 +80,15 @@ public class InvoiceService {
 
     @Transactional
     public void updateInvoice(InvoiceDto invoiceDto, CustomerDto customerDto, List<InvoiceLinesDto> invoiceLinesDtos) {
-        invoiceDto.setCustomer(customerDto);
-        invoiceDto.setInvoiceLines(invoiceLinesDtos);
         Invoice invoice = modelMapper.map(invoiceDto, Invoice.class);
+        if (customerDto.getName().isEmpty()){
+            invoice.setCustomer(customerService.findCustomerById(customerDto.getId()));
+            log.info("Customer from search: {}, {}", invoice.getCustomer().getName(), invoice.getCustomer().getId());
+        }else {
+            invoice.setCustomer(customerService.createCustomer(customerDto));
+            log.info("Edited or new customer");
+        }
+        invoice.setInvoiceLines(invoiceLinesService.create(invoiceLinesDtos));
         invoiceRepository.save(invoice);
     }
 

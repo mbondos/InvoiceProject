@@ -71,7 +71,7 @@
 
             <form id="dynamic" action="#" th:action="@{'/invoices/'+${invoice.id}+'/edit'}" th:method="POST">
 
-                <input type="hidden" th:field="${customer.id}" id="customerIdHidden" name="customer.id"/>
+                <input  th:field="${customer.id}" id="customerIdHidden" name="customer.id"/>
 
                 <!-- Customer -->
                 <div class="row">
@@ -81,7 +81,7 @@
                         </div>
                         <div class="panel-body">
                             <div class="row">
-                                <div class="col-md-2">
+                                <div class="col-md-2" id="customerInfo">
                                     <ul class="list-unstyled">
                                         <strong>
                                             <li th:text="${customer.name}"/>
@@ -96,79 +96,82 @@
                                 </div>
 
                                 <!-- Search customers -->
-                                <div class="col-md-2">
-                                <div class="row">
-                                    <label for="searchCustomer" th:text="#{customer.search}">Find customer</label>
-                                    <div class="form-group input-group" id="searchCustomer">
-                                        <input type="text" class="form-control " id="typeahead"
-                                               data-provide="typeahead" autocomplete="off"
-                                        />
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-search" aria-hidden="true"></i>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="row">
-                                    <!-- Modal button : Create new customer -->
-                                    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal"
-                                            data-target="#customerModal" th:text="#{customer.createButton}">
-                                        Create new
-                                    </button>
-                                </div>
-                                </div>
-                                    <!-- Modal : Create new customer -->
-                                    <div class="modal fade" id="customerModal" tabindex="-1" role="dialog"
-                                         aria-labelledby="myModalLabel">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal"
-                                                            aria-label="Close"><span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                    <h4 class="modal-title" id="myModalLabel" th:text="#{customer.new}">
-                                                        New
-                                                        customer</h4>
-                                                </div>
-                                                <div class="modal-body" id="customerModalFields">
-                                                    <label for="customerName" autocomplete="off"
-                                                           th:text="#{customer.name}">Customer
-                                                        name</label>
-                                                    <input type="text" class="form-control" id="customerName"
-                                                           autocomplete="off"
-                                                           th:field="${customer.name}"/>
-                                                    <label for="streetAddress" th:text="#{address.street}">Street
-                                                        address</label>
-                                                    <input type="text" class="form-control" id="streetAddress"
-                                                           autocomplete="off"
-                                                           th:field="${customer.address.streetAddress}"/>
-                                                    <label for="city" th:text="#{address.city}">City</label>
-                                                    <input type="text" class="form-control" id="city" autocomplete="off"
-                                                           th:field="${customer.address.city}"/>
-                                                    <label for="zipCode" th:text="#{address.zipCode}">Zip code</label>
-                                                    <input type="text" class="form-control" id="zipCode"
-                                                           autocomplete="off"
-                                                           th:field="${customer.address.zipCode}"/>
-                                                    <label for="nip" th:text="#{nip}">Nip</label>
-                                                    <input type="text" class="form-control" id="nip" autocomplete="off"
-                                                           th:field="${customer.nip}"/>
-
-
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" id="cancel" class="btn btn-default"
-                                                            data-dismiss="modal">Cancel
-                                                    </button>
-                                                    <button type="button" class="btn btn-primary" data-dismiss="modal">
-                                                        Save
-                                                        changes
-                                                    </button>
-                                                </div>
+                                <div class="col-md-2" >
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-11">
+                                    <div class="row">
+                                        <label for="searchCustomer" th:text="#{customer.search}">Find customer</label>
+                                        <div class="form-group input-group" id="searchCustomer">
+                                            <input type="text" class="form-control " id="typeahead"
+                                                   data-provide="typeahead" autocomplete="off"
+                                            />
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-search" aria-hidden="true"></i>
                                             </div>
                                         </div>
                                     </div>
 
+
+                                    <div class="row">
+                                        <!-- Modal button : Create new customer -->
+                                        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal"
+                                                data-target="#customerModal" th:text="#{customer.createButton}"
+                                                id="customerNew">
+                                            Create new
+                                        </button>
+                                    </div>
+                                    </div>
+                                </div>
+                                <!-- Modal : Create new customer -->
+                                <div class="modal fade" id="customerModal" tabindex="-1" role="dialog"
+                                     aria-labelledby="myModalLabel">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close"><span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <h4 class="modal-title" id="myModalLabel" th:text="#{customer.new}">
+                                                    New
+                                                    customer</h4>
+                                            </div>
+                                            <div class="modal-body" id="customerModalFields">
+                                                <label for="customerName" autocomplete="off"
+                                                       th:text="#{customer.name}">Customer
+                                                    name</label>
+                                                <input type="text" class="form-control" id="customerName"
+                                                       autocomplete="off"
+                                                       th:field="${customer.name}"/>
+                                                <label for="streetAddress" th:text="#{address.street}">Street
+                                                    address</label>
+                                                <input type="text" class="form-control" id="streetAddress"
+                                                       autocomplete="off"
+                                                       th:field="${customer.address.streetAddress}"/>
+                                                <label for="city" th:text="#{address.city}">City</label>
+                                                <input type="text" class="form-control" id="city" autocomplete="off"
+                                                       th:field="${customer.address.city}"/>
+                                                <label for="zipCode" th:text="#{address.zipCode}">Zip code</label>
+                                                <input type="text" class="form-control" id="zipCode"
+                                                       autocomplete="off"
+                                                       th:field="${customer.address.zipCode}"/>
+                                                <label for="nip" th:text="#{nip}">Nip</label>
+                                                <input type="text" class="form-control" id="nip" autocomplete="off"
+                                                       th:field="${customer.nip}"/>
+
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" id="cancel" class="btn btn-default"
+                                                        data-dismiss="modal">Cancel
+                                                </button>
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal">
+                                                    Save
+                                                    changes
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
 
                             </div>
@@ -283,7 +286,8 @@
                                 var linesCounter = parseInt("[[${#lists.size(lines.linesList)}]]");
                                 /*]]>*/
                             </script>
-                            <tr class="table-hover" th:style="${iter}&lt;${#lists.size(lines.linesList)} ? 'display:float' : 'display:none'"
+                            <tr class="table-hover"
+                                th:style="${iter}&lt;${#lists.size(lines.linesList)} ? 'display:float' : 'display:none'"
                                 th:each="iter : ${#numbers.sequence(0, 10)}"
                                 th:id="'row' + ${iter}">
                                 <td class="numerate"></td>
@@ -456,6 +460,10 @@
                 },
                 updater: function (item) {
                     $('#customerIdHidden').val(map[item].id);
+                    $('#customerInfo').remove();
+                    $('#customerModalFields').find('input,select').each(function () {
+                        $(this).val('');
+                    });
                     return item;
                 }
             })
@@ -477,6 +485,13 @@
                 $(this).val('');
             });
         });
+        $('#customerNew').click(function () {
+            $('#customerInfo').remove();
+            $('#customerModalFields').find('input,select').each(function () {
+                $(this).val('');
+            });
+            $('#customerIdHidden').val('');
+        });
     });
 
 </script>
@@ -485,37 +500,7 @@
 
     $('#dynamic').calx();
 
-    /*    // load a language
-     numeral.language('fr', {
-     delimiters: {
-     thousands: ' ',
-     decimal: '.'
-     },
-     abbreviations: {
-     thousand: 'k',
-     million: 'm',
-     billion: 'b',
-     trillion: 't'
-     },
-     ordinal : function (number) {
-     return number === 1 ? 'er' : 'ème';
-     },
-     currency: {
-     symbol: 'PLN'
-     }
-     });
-
-     // switch between languages
-     numeral.language('fr');*/
-
-
     $(document).ready(function () {
-        /*<![CDATA[*/
-        /*$('#invoiceNumber').val([[${nextInvoiceNumber}]]);*/
-        /*]]>*/
-
-
-
         numerate();
         $('#newRow').click(function (e) {
             e.preventDefault();

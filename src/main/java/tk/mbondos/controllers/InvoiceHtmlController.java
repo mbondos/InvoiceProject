@@ -108,7 +108,7 @@ public class InvoiceHtmlController {
             return "invoice/{invoiceId}/edit";
         }
 
-        invoiceService.createInvoice(invoice, customer, lines.getLinesList());
+        invoiceService.updateInvoice(invoice, customer, lines.getLinesList());
         //invoiceService.updateInvoice(invoice, customer, lines.getLinesList());
         return "redirect:/invoices";
     }
