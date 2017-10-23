@@ -83,18 +83,14 @@ public class InvoiceHtmlController {
     public String displayEditInvoiceForm(Model model, @PathVariable Long invoiceId) {
         InvoiceDto invoice = modelMapper.map(invoiceService.findById(invoiceId), InvoiceDto.class);
         model.addAttribute("invoice", invoice);
-        model.addAttribute("customer", invoice.getCustomer());
         InvoiceLinesWrapper linesWrapper = new InvoiceLinesWrapper(invoice.getInvoiceLines());
         model.addAttribute("lines", linesWrapper);
-        //model.addAttribute("editedInvoiceId", invoiceId);
 
         return "invoice/edit";
     }
 
     @RequestMapping(value = "{invoiceId}/edit", method = RequestMethod.POST)
     public String processEditInvoiceForm(Model model, @PathVariable Long invoiceId,
-                                         @Valid @ModelAttribute("customer") CustomerDto customer,
-                                         BindingResult resultCustomer,
                                          @Valid @ModelAttribute("lines") InvoiceLinesWrapper lines,
                                          BindingResult resultLines,
                                          @Valid @ModelAttribute("invoice") InvoiceDto invoice,
@@ -102,13 +98,13 @@ public class InvoiceHtmlController {
     ) {
 
 
-        if (resultInvoice.hasErrors() || resultCustomer.hasErrors() || resultLines.hasErrors()) {
+        if (resultInvoice.hasErrors() || resultLines.hasErrors()) {
             log.info("Invoice edit form has errors");
 
             return "invoice/{invoiceId}/edit";
         }
 
-        invoiceService.updateInvoice(invoice, customer, lines.getLinesList());
+        invoiceService.updateInvoice(invoice, lines.getLinesList());
         //invoiceService.updateInvoice(invoice, customer, lines.getLinesList());
         return "redirect:/invoices";
     }

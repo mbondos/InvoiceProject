@@ -350,7 +350,7 @@
                                 </td>
                                 <td class="no-line text-right">
                                     <input class="form-control no-border" data-cell="H1" data-format="0[.]00"
-                                           data-formula="I1-G1"
+                                           data-formula="SUM(E1:E10)-SUM(F1:F10)+0"
                                            th:field="${invoice.totalTax}"/>
                                 </td>
                                 <td class="no-line"></td>
@@ -456,7 +456,7 @@
 
 <script type="text/javascript" th:inline="javascript">
 
-    $('#dynamic').calx();
+    $form = $('#dynamic').calx();
 
     /*    // load a language
      numeral.language('fr', {
@@ -502,6 +502,8 @@
             numerate();
             $form.calx('update');
             $form.calx('getCell', 'G1').calculate();
+            $form.calx('getCell', 'H1').calculate();
+            $form.calx('getCell', 'I1').calculate();
         });
 
 

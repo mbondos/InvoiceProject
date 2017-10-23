@@ -36,10 +36,6 @@
             defer="defer" th:if="false"></script>
 
 
-
-
-
-
 </head>
 
 <body>
@@ -61,15 +57,17 @@
             <div class="row">
                 <p th:unless="${invoices} and ${invoices.size()}">no invoices</p>
 
-                <table class="table table-bordered table-striped" id="invoiceList">
+                <table class="table table-bordered table-hover" id="invoiceList">
                     <thead>
                     <tr>
-                        <th>Lp</th>
-                        <th>Invoice number</th>
+                        <th class="col-md-1">Lp</th>
+                        <th class="col-md-1 text-center">Invoice number</th>
+                        <th class="col-md-2">Customer</th>
+                        <th>NIP</th>
                         <th>Issue date</th>
-                        <th>Customer</th>
                         <th>totalNetto</th>
                         <th>totalBrutto</th>
+                        <th class="col-md-1 text-center" th:text="#{print}">Print</th>
                         <th class="col-md-1 text-center" th:text="#{edit}">Edit</th>
                         <th class="col-md-1 text-center" th:text="#{remove}">Remove</th>
 
@@ -78,21 +76,38 @@
 
                     <tbody>
                     <tr th:each="invoice, iter : ${invoices}">
-                        <td th:text="${iter.index} + 1">Id</td>
-                        <td th:text="${invoice.invoiceNumber}">Id</td>
-                        <td th:text="${invoice.issueDate}">Date</td>
-                        <td th:text="${invoice.customer.name}">Customer</td>
-                        <td th:text="${invoice.totalNetto}" class="no-sort">Netto</td>
-                        <td th:text="${invoice.totalBrutto}" class="no-sort">Brutto</td>
+                        <td th:attr="href='/invoices/'+${invoice.id}+'/edit'"
+                            class="clickable" th:text="${iter.index} + 1">Id</td>
+                        <td th:attr="href='/invoices/'+${invoice.id}+'/edit'"
+                            class="clickable" th:text="${invoice.invoiceNumber}">Id</td>
+                        <td th:attr="href='/invoices/'+${invoice.id}+'/edit'"
+                            class="clickable" th:text="${invoice.customer.name}">Customer</td>
+                        <td th:attr="href='/invoices/'+${invoice.id}+'/edit'"
+                            class="clickable" th:text="${invoice.customer.nip}">NIP</td>
+                        <td th:attr="href='/invoices/'+${invoice.id}+'/edit'"
+                            class="clickable" th:text="${invoice.issueDate}">Date</td>
+                        <td th:attr="href='/invoices/'+${invoice.id}+'/edit'"
+                            class="clickable" th:text="${invoice.totalNetto}">Netto</td>
+                        <td th:attr="href='/invoices/'+${invoice.id}+'/edit'"
+                            class="clickable" th:text="${invoice.totalBrutto}">Brutto</td>
                         <td class="text-center">
-                            <button class="btn-edit btn btn-sm btn-primary"><i class="fa fa-pencil"
-                                                                               aria-hidden="true"></i>
-                            </button>
+                            <a class="btn-edit btn btn-sm btn-success"
+                               th:attr="href='/invoices/'+${invoice.id}+'/pdf'">
+                                <i class="fa fa-print" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                        <td class="text-center">
+                            <a class="btn-edit btn btn-sm btn-primary"
+                               th:attr="href='/invoices/'+${invoice.id}+'/edit'">
+                                <i class="fa fa-pencil"
+                                   aria-hidden="true"></i>
+                            </a>
                         </td>
 
                         <td class="text-center">
                             <button class="btn-remove btn btn-sm btn-danger"
-                                    th:attr="data-href='/invoices/'+${invoice.id}+'/delete'"  data-toggle="modal" data-target="#confirm-delete">
+                                    th:attr="data-href='/invoices/'+${invoice.id}+'/delete'" data-toggle="modal"
+                                    data-target="#confirm-delete">
                                 <i class="fa fa-times fa-fw"></i>
                             </button>
                         </td>
@@ -133,19 +148,24 @@
 
 
         $('#invoiceList').DataTable({
-            scrollY:        '50vh',
+            scrollY: '50vh',
             scrollCollapse: true,
-            paging:         false,
-            info:     false,
+            paging: false,
+            info: false,
 
-            columnDefs: [ {
+            columnDefs: [{
                 /*Disable sorting for buttons*/
-                targets  : [6,7],
+                targets: [7, 8, 9],
                 orderable: false
             }]
         });
         $('#confirm-delete').on('show.bs.modal', function (e) {
             $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+        });
+
+        $('.clickable').click(function () {
+            console.log($(this).attr("href"));
+            window.location.href = $(this).attr("href");
         });
     });
 

@@ -71,7 +71,8 @@
 
             <form id="dynamic" action="#" th:action="@{'/invoices/'+${invoice.id}+'/edit'}" th:method="POST">
 
-                <input  th:field="${customer.id}" id="customerIdHidden" name="customer.id"/>
+                <input type="hidden" th:field="${invoice.id}" />
+                <input type="hidden" th:field="${invoice.customer.id}" id="customerIdHidden" name="customer.id"/>
 
                 <!-- Customer -->
                 <div class="row">
@@ -84,11 +85,11 @@
                                 <div class="col-md-2" id="customerInfo">
                                     <ul class="list-unstyled">
                                         <strong>
-                                            <li th:text="${customer.name}"/>
-                                            <li th:text="${customer.address.streetAddress}"/>
-                                            <li th:text="${customer.address.city}"/>
-                                            <li th:text="${customer.address.zipCode}"/>
-                                            <li th:text="${customer.nip}"/>
+                                            <li th:text="${invoice.customer.name}"/>
+                                            <li th:text="${invoice.customer.address.streetAddress}"/>
+                                            <li th:text="${invoice.customer.address.city}"/>
+                                            <li th:text="${invoice.customer.address.zipCode}"/>
+                                            <li th:text="${invoice.customer.nip}"/>
                                         </strong>
                                     </ul>
 
@@ -141,22 +142,22 @@
                                                     name</label>
                                                 <input type="text" class="form-control" id="customerName"
                                                        autocomplete="off"
-                                                       th:field="${customer.name}"/>
+                                                       th:field="${invoice.customer.name}"/>
                                                 <label for="streetAddress" th:text="#{address.street}">Street
                                                     address</label>
                                                 <input type="text" class="form-control" id="streetAddress"
                                                        autocomplete="off"
-                                                       th:field="${customer.address.streetAddress}"/>
+                                                       th:field="${invoice.customer.address.streetAddress}"/>
                                                 <label for="city" th:text="#{address.city}">City</label>
                                                 <input type="text" class="form-control" id="city" autocomplete="off"
-                                                       th:field="${customer.address.city}"/>
+                                                       th:field="${invoice.customer.address.city}"/>
                                                 <label for="zipCode" th:text="#{address.zipCode}">Zip code</label>
                                                 <input type="text" class="form-control" id="zipCode"
                                                        autocomplete="off"
-                                                       th:field="${customer.address.zipCode}"/>
+                                                       th:field="${invoice.customer.address.zipCode}"/>
                                                 <label for="nip" th:text="#{nip}">Nip</label>
                                                 <input type="text" class="form-control" id="nip" autocomplete="off"
-                                                       th:field="${customer.nip}"/>
+                                                       th:field="${invoice.customer.nip}"/>
 
 
                                             </div>
@@ -177,8 +178,8 @@
                             </div>
 
                             <span class="label label-danger"
-                                  th:if="${#fields.hasErrors('customer')}"
-                                  th:errors="${customer}"/>
+                                  th:if="${#fields.hasErrors('invoice.customer')}"
+                                  th:errors="${invoice.customer}"/>
 
                         </div>
                     </div>
@@ -244,7 +245,7 @@
                                     <select class="form-control " id="paymentType" th:field="${invoice.paymentType}">
                                         <option th:each="type : ${T(tk.mbondos.enums.PaymentType).values()}"
                                                 th:value="${type}"
-                                                th:text="#{'invoice.paymentType.'+${{type}}}">Default
+                                                th:text="#{'invoice.paymentType.' + ${{type}}}">Default
                                         </option>
                                     </select>
                                 </div>
@@ -381,7 +382,7 @@
                                 </td>
                                 <td class="no-line text-right">
                                     <input class="form-control no-border" data-cell="H1" data-format="0[.]00"
-                                           data-formula="I1-G1"
+                                           data-formula="SUM(E1:E10)-SUM(F1:F10)+0"
                                            th:field="${invoice.totalTax}"/>
                                 </td>
                                 <td class="no-line"></td>
@@ -498,7 +499,7 @@
 
 <script type="text/javascript" th:inline="javascript">
 
-    $('#dynamic').calx();
+    $form = $('#dynamic').calx();
 
     $(document).ready(function () {
         numerate();
@@ -511,10 +512,13 @@
 
         });
         $('#itemlist').on('click', '.btn-remove', function () {
+
             $(this).parent().parent().remove();
             numerate();
             $form.calx('update');
             $form.calx('getCell', 'G1').calculate();
+            $form.calx('getCell', 'H1').calculate();
+            $form.calx('getCell', 'I1').calculate();
         });
 
 
