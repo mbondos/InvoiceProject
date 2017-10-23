@@ -58,6 +58,7 @@ public class InvoiceService {
     @Transactional
     public void createInvoice(InvoiceDto invoiceDto, CustomerDto customerDto, List<InvoiceLinesDto> invoiceLinesDtos) {
         Invoice invoice = modelMapper.map(invoiceDto, Invoice.class);
+        invoiceRepository.save(invoice);
         Customer customer;
         Organization organization;
         List<InvoiceLines> invoiceLines = invoiceLinesService.create(invoiceLinesDtos);
@@ -108,18 +109,13 @@ public class InvoiceService {
         if (currentDate.getMonth().equals(maxIdDate.getMonth())
                 && currentDate.getYear() == maxIdDate.getYear()) {
             int last = Integer.parseInt(maxId.getInvoiceNumber().substring(0,2));
-            log.info("Last invoice number: {}", last);
             invoiceNumber = String.format("%02d/%02d/%d", ++last, currentDate.getMonthValue(), currentDate.getYear());
-
-
         } else {
             invoiceNumber = String.format("%02d/%02d/%d", 1, currentDate.getMonthValue(), currentDate.getYear());
             log.info("Last invoice not current month");
         }
 
-
-        log.info("id: {}", maxId.getId());
-        log.info("Invoice number: {}", invoiceNumber);
+        log.info("Next Invoice number: {}", invoiceNumber);
 
         return invoiceNumber;
     }
