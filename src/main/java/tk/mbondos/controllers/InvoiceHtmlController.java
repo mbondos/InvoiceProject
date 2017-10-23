@@ -59,6 +59,8 @@ public class InvoiceHtmlController {
         return "invoice/show";
     }
 
+
+    //DELETE invoice
     @RequestMapping(value = "{invoiceId}/delete", method = RequestMethod.GET)
     public String deleteInvoice(@PathVariable Long invoiceId) {
         invoiceService.deleteInvoice(invoiceId);
@@ -78,40 +80,9 @@ public class InvoiceHtmlController {
         return "invoice";
     }
 
-    //GET edit page
-    @RequestMapping(value = "{invoiceId}/edit", method = RequestMethod.GET)
-    public String displayEditInvoiceForm(Model model, @PathVariable Long invoiceId) {
-        InvoiceDto invoice = modelMapper.map(invoiceService.findById(invoiceId), InvoiceDto.class);
-        model.addAttribute("invoice", invoice);
-        InvoiceLinesWrapper linesWrapper = new InvoiceLinesWrapper(invoice.getInvoiceLines());
-        model.addAttribute("lines", linesWrapper);
-
-        return "invoice/edit";
-    }
-
-    @RequestMapping(value = "{invoiceId}/edit", method = RequestMethod.POST)
-    public String processEditInvoiceForm(Model model, @PathVariable Long invoiceId,
-                                         @Valid @ModelAttribute("lines") InvoiceLinesWrapper lines,
-                                         BindingResult resultLines,
-                                         @Valid @ModelAttribute("invoice") InvoiceDto invoice,
-                                         BindingResult resultInvoice
-    ) {
-
-
-        if (resultInvoice.hasErrors() || resultLines.hasErrors()) {
-            log.info("Invoice edit form has errors");
-
-            return "invoice/{invoiceId}/edit";
-        }
-
-        invoiceService.updateInvoice(invoice, lines.getLinesList());
-        //invoiceService.updateInvoice(invoice, customer, lines.getLinesList());
-        return "redirect:/invoices";
-    }
-
+    //POST add page
     @RequestMapping(value = "add", method = RequestMethod.POST)
-    public String processAddInvoiceForm(Model model,
-                                        @Valid @ModelAttribute("customer") CustomerDto customer,
+    public String processAddInvoiceForm(@Valid @ModelAttribute("customer") CustomerDto customer,
                                         BindingResult resultCustomer,
                                         @Valid @ModelAttribute("lines") InvoiceLinesWrapper lines,
                                         BindingResult resultLines,
@@ -132,6 +103,37 @@ public class InvoiceHtmlController {
 
         invoiceService.createInvoice(invoice, customer, lines.getLinesList());
         return "redirect:add";
+    }
+
+    //GET edit page
+    @RequestMapping(value = "{invoiceId}/edit", method = RequestMethod.GET)
+    public String displayEditInvoiceForm(Model model, @PathVariable Long invoiceId) {
+        InvoiceDto invoice = modelMapper.map(invoiceService.findById(invoiceId), InvoiceDto.class);
+        model.addAttribute("invoice", invoice);
+        InvoiceLinesWrapper linesWrapper = new InvoiceLinesWrapper(invoice.getInvoiceLines());
+        model.addAttribute("lines", linesWrapper);
+
+        return "invoice/edit";
+    }
+
+    //POST edit page
+    @RequestMapping(value = "{invoiceId}/edit", method = RequestMethod.POST)
+    public String processEditInvoiceForm(@PathVariable Long invoiceId,
+                                         @Valid @ModelAttribute("lines") InvoiceLinesWrapper lines,
+                                         BindingResult resultLines,
+                                         @Valid @ModelAttribute("invoice") InvoiceDto invoice,
+                                         BindingResult resultInvoice
+    ) {
+
+
+        if (resultInvoice.hasErrors() || resultLines.hasErrors()) {
+            log.info("Invoice edit form has errors");
+
+            return "invoice/{invoiceId}/edit";
+        }
+
+        invoiceService.updateInvoice(invoice, lines.getLinesList());
+        return "redirect:/invoices";
     }
 
     @RequestMapping(value = "{invoiceId}/pdf", method = RequestMethod.GET, produces = "application/pdf")

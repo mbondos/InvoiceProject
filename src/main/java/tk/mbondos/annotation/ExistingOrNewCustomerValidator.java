@@ -27,7 +27,7 @@ public class ExistingOrNewCustomerValidator implements ConstraintValidator<Exist
                 log.info("Using existing customer");
                 return true;
             }
-        } else if (!customer.getName().isEmpty() && customer.getAddress() != null && customer.getNip().isEmpty()) {
+        } else if (!customer.getName().isEmpty() && customer.getAddress() != null && !customer.getNip().isEmpty()) {
             log.info("Creating new customer");
             return true;
         }
