@@ -333,8 +333,8 @@
                                 <td class="no-line"></td>
                                 <td class="no-line text-center"><strong th:text="#{invoice.valueNetto}">Total
                                     netto</strong></td>
-                                <td class="no-line text-right">
-                                    <input class="form-control no-border" data-cell="G1" data-format="0[.]00"
+                                <td class="no-line text-center">
+                                    <label data-cell="G1" data-format="0[.]00"
                                            data-formula="SUM(F1:F10)+0"
                                            th:field="${invoice.totalNetto}"/>
                                 </td>
@@ -348,8 +348,8 @@
                                 <td class="no-line"></td>
                                 <td class="no-line text-center"><strong th:text="#{invoice.valueTax}">Tax total</strong>
                                 </td>
-                                <td class="no-line text-right">
-                                    <input class="form-control no-border" data-cell="H1" data-format="0[.]00"
+                                <td class="no-line text-center">
+                                    <label data-cell="H1" data-format="0[.]00"
                                            data-formula="SUM(E1:E10)-SUM(F1:F10)+0"
                                            th:field="${invoice.totalTax}"/>
                                 </td>
@@ -363,8 +363,8 @@
                                 <td class="no-line"></td>
                                 <td class="no-line text-center"><strong th:text="#{invoice.valueBrutto}">Total
                                     brutto</strong></td>
-                                <td class="no-line text-right">
-                                    <input class="form-control no-border" data-cell="I1" data-format="0[.]00"
+                                <td class="no-line text-center">
+                                    <label data-cell="I1" data-format="0[.]00"
                                            data-formula="SUM(E1:E10)"
                                            th:field="${invoice.totalBrutto}"/>
                                 </td>
