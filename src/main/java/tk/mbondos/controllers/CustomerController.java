@@ -1,7 +1,6 @@
 package tk.mbondos.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import tk.mbondos.domain.Customer;
 import tk.mbondos.dtos.CustomerDto;
@@ -10,7 +9,7 @@ import tk.mbondos.services.CustomerService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/customers")
+@RequestMapping("/api/customers")
 public class CustomerController {
     private CustomerService customerService;
 
@@ -27,13 +26,13 @@ public class CustomerController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<Customer> getCustomers() {
-        return customerService.listAllCustomers();
+    public List<Customer> getAllCustomers() {
+        return customerService.getAllCustomers();
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public List<Customer> searchCustomers(@RequestParam("name") String name) {
-        return customerService.searchByName(name);
+        return customerService.getCustomersByName(name);
     }
 
    /* @RequestMapping(method = RequestMethod.GET, value = "/{customerId}")

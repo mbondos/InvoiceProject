@@ -1,6 +1,7 @@
 package tk.mbondos.services;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mbondos.domain.Customer;
@@ -11,9 +12,14 @@ import java.util.List;
 
 @Service
 public class CustomerService {
+    @Autowired
     private CustomerRepository customerRepository;
+
     private ModelMapper modelMapper;
 
+
+    public CustomerService() {
+    }
 
     public CustomerService(CustomerRepository customerRepository, ModelMapper modelMapper) {
         this.customerRepository = customerRepository;
@@ -28,7 +34,7 @@ public class CustomerService {
     }
 
     @Transactional
-    public List<Customer> listAllCustomers() {
+    public List<Customer> getAllCustomers() {
         return customerRepository.findAll();
     }
 
@@ -38,7 +44,7 @@ public class CustomerService {
     }
 
     @Transactional
-    public List<Customer> searchByName(String name) {
+    public List<Customer> getCustomersByName(String name) {
         return customerRepository.findByNameIgnoreCaseContaining(name);
     }
 }
