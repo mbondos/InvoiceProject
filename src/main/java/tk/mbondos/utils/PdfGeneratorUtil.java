@@ -39,7 +39,7 @@ public class PdfGeneratorUtil {
         FileOutputStream os = null;
         String fileName = "invoice_" + UUID.randomUUID().toString();
         try {
-            final File outputFile = new File("src/main/resources/files/" + fileName + ".pdf");
+            final File outputFile = File.createTempFile(fileName,".pdf");
             os = new FileOutputStream(outputFile);
 
             ITextRenderer renderer = new ITextRenderer();

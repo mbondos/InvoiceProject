@@ -106,7 +106,9 @@ public class InvoiceService {
         Invoice maxId = invoiceRepository.findTopByOrderByIdDesc();
         LocalDate maxIdDate = maxId.getIssueDate();
 
-        if (currentDate.getMonth().equals(maxIdDate.getMonth())
+
+        if (maxId != null
+                && currentDate.getMonth().equals(maxIdDate.getMonth())
                 && currentDate.getYear() == maxIdDate.getYear()) {
             int last = Integer.parseInt(maxId.getInvoiceNumber().substring(0,2));
             invoiceNumber = String.format("%02d/%02d/%d", ++last, currentDate.getMonthValue(), currentDate.getYear());

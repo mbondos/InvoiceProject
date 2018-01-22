@@ -50,9 +50,9 @@
     <!-- Sidebar -->
     <div class="col-sm-3 col-md-2 sidebar" th:fragment="sidebar(activeTab)">
                 <ul class="nav nav-sidebar">
-                    <li th:class="${activeTab == 'dashboard'}? 'active' : null"><a href="index.html"> Dashboard </a></li>
-                    <li th:class="${activeTab == 'invoiceAdd'}? 'active' : null"><a th:href="@{invoices/add}" href="invoice.html">Invoices</a></li>
-                    <li><a href="#">Analytics</a></li>
+                    <li th:class="${activeTab == 'dashboard'}? 'active' : null"><a href="index.html"> Home </a></li>
+                    <li th:class="${activeTab == 'invoiceShow'}? 'active' : null"><a th:href="@{/invoices}" href="invoice.html">Invoices</a></li>
+                    <li th:class="${activeTab == 'invoiceAdd'}? 'active' : null"><a th:href="@{/invoices/add}" href="invoice.html">Add invoice</a></li>
                     <li><a href="#">Export</a></li>
                 </ul>
                 <ul class="nav nav-sidebar">

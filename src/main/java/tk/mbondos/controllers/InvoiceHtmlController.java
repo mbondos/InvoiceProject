@@ -143,7 +143,6 @@ public class InvoiceHtmlController {
         File file = null;
         data.put("invoice", invoiceService.findById(invoiceId));
         try {
-            pdfGeneratorUtil.clearDirectory();
             String download = pdfGeneratorUtil.createPdf("pdftemplate", data);
             file = new File(download);
             response.setContentType("application/pdf");
