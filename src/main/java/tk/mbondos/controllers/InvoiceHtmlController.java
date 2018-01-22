@@ -77,7 +77,7 @@ public class InvoiceHtmlController {
         InvoiceLinesWrapper linesWrapper = new InvoiceLinesWrapper();
         model.addAttribute("lines", linesWrapper);
 
-        return "invoice";
+        return "invoice/add";
     }
 
     //POST add page
@@ -94,7 +94,7 @@ public class InvoiceHtmlController {
         if (resultInvoice.hasErrors() || resultCustomer.hasErrors() || resultLines.hasErrors()) {
             log.info("Invoice add form has errors");
 
-            return "invoice";
+            return "invoice/add";
         }
 
         invoice.validate();
