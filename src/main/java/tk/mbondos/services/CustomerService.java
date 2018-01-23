@@ -12,7 +12,6 @@ import java.util.List;
 
 @Service
 public class CustomerService {
-    @Autowired
     private CustomerRepository customerRepository;
 
     private ModelMapper modelMapper;
@@ -21,6 +20,7 @@ public class CustomerService {
     public CustomerService() {
     }
 
+    @Autowired
     public CustomerService(CustomerRepository customerRepository, ModelMapper modelMapper) {
         this.customerRepository = customerRepository;
         this.modelMapper = modelMapper;
