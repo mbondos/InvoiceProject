@@ -28,7 +28,12 @@ public class CustomerService {
 
     @Transactional
     public Customer createCustomer(CustomerDto customerDto) {
-        Customer customer = modelMapper.map(customerDto, Customer.class);
+        Customer customer;
+        if (customerDto.getId() != null)
+             customer = modelMapper.map(customerDto, Customer.class);
+        else
+            customer = new Customer(customerDto.getName(), customerDto.getAddress(), customerDto.getNip());
+
         Customer save = customerRepository.save(customer);
         return save;
     }

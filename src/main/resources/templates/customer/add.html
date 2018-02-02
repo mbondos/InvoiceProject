@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>InvoiceProject</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.7/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/3.2.0/jquery.min.js"
+            th:src="@{/webjars/jquery/3.2.0/jquery.min.js}" type='text/javascript'></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            th:src="@{/js/bootstrap.min.js}" type='text/javascript'></script>
+
+    <!--Calx & Numeral-->
+    <script src="../../static/js/numeral.min.js"
+            th:src="@{/js/numeral.min.js}"></script>
+
+    <script src="../../static/js/jquery-calx-2.2.6.min.js"
+            th:src="@{/js/jquery-calx-2.2.6.min.js}"></script>
+
+    <!--Datepicker-->
+    <link href="../../static/css/bootstrap-datepicker.min.css"
+          th:href="@{/css/bootstrap-datepicker.min.css}" rel="stylesheet" media="screen"/>
+
+    <script src="../../static/js/bootstrap-datepicker.min.js"
+            th:src="@{/js/bootstrap-datepicker.min.js}"></script>
+
+    <script src="../../static/js/bootstrap-datepicker.pl.min.js"
+            th:src="@{/js/bootstrap-datepicker.pl.min.js}"></script>
+
+    <!--Typeahead-->
+    <script src="../../static/js/typeahead.min.js"
+            th:src="@{/js/typeahead.min.js}" type='text/javascript'></script>
+
+    <link href="../../static/css/style.css"
+          th:href="@{/css/style.css}" rel="stylesheet" media="screen"/>
+
+    <!--Font Awesome-->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+          rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+          crossorigin="anonymous"/>
+
+
+    <!-- Thymeleaf replace -->
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js" th:if="false"></script>
+    <script src="http://blackpeppersoftware.github.io/thymeleaf-fragment.js/thymeleaf-fragment.js"
+            defer="defer" th:if="false"></script>
+
+</head>
+
+<body>
+<nav th:replace="fragments :: navbar"></nav>
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div th:replace="fragments :: sidebar('customerAdd')"></div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+            <!--FORM-->
+
+
+            <div class="row ">
+
+                <h2 class="title" th:text="#{customer.new}">Create new customer</h2>
+
+            </div>
+
+            <form id="dynamic" action="#" th:action="@{/customers/add}" th:method="POST">
+
+
+
+
+                <!-- Invoice data -->
+                <div class="row">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title" th:text="#{customer}">Customer</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-md-5 ">
+
+                                <div class="form-group">
+                                    <label for="customerName" autocomplete="off" th:text="#{customer.name}">Customer
+                                        name</label>
+                                    <input type="text" class="form-control" id="customerName"
+                                           autocomplete="off"
+                                           th:field="${customer.name}"/>
+                                    <label for="streetAddress" th:text="#{address.street}">Street
+                                        address</label>
+                                    <input type="text" class="form-control" id="streetAddress"
+                                           autocomplete="off"
+                                           th:field="${customer.address.streetAddress}"/>
+                                    <label for="city" th:text="#{address.city}">City</label>
+                                    <input type="text" class="form-control" id="city" autocomplete="off"
+                                           th:field="${customer.address.city}"/>
+                                    <label for="zipCode" th:text="#{address.zipCode}">Zip code</label>
+                                    <input type="text" class="form-control" id="zipCode" autocomplete="off"
+                                           th:field="${customer.address.zipCode}"/>
+                                    <label for="nip" th:text="#{nip}">Nip</label>
+                                    <input type="text" class="form-control" id="nip" autocomplete="off"
+                                           th:field="${customer.nip}"/>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 col-md-offset-4">
+                                        <input type="submit" class="btn btn-success col-md-10 " th:value="#{invoice.submit}"/>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+
+</body>
+</html>

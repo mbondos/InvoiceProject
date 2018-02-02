@@ -102,7 +102,7 @@ public class InvoiceHtmlController {
 
 
         invoiceService.createInvoice(invoice, customer, lines.getLinesList());
-        return "redirect:add";
+        return "redirect:/invoices";
     }
 
     //GET edit page

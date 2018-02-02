@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>InvoiceProject</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.7/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/3.2.0/jquery.min.js"
+            th:src="@{/webjars/jquery/3.2.0/jquery.min.js}"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            th:src="@{/js/bootstrap.min.js}" type='text/javascript'></script>
+
+
+    <!--Font Awesome-->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+          rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+          crossorigin="anonymous"/>
+
+    <!-- Data Tables -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css"/>
+
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+
+
+    <link href="../static/css/style.css"
+          th:href="@{css/style.css}" rel="stylesheet" media="screen"/>
+
+    <!-- Thymeleaf replace -->
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js" th:if="false"></script>
+    <script src="http://blackpeppersoftware.github.io/thymeleaf-fragment.js/thymeleaf-fragment.js"
+            defer="defer" th:if="false"></script>
+
+
+</head>
+
+<body>
+
+<nav th:replace="fragments :: navbar"></nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div th:replace="fragments :: sidebar('customerShow')"></div>
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="row">
+                <h2 th:text="${title}">Default Title</h2>
+            </div>
+            <div class="row">
+                <a href="/customers/add"><p th:text="#{invoice.add}"/></a>
+            </div>
+
+            <div class="row">
+                <p th:unless="${customers} and ${customers.size()}">no customers</p>
+
+                <table class="table table-bordered table-hover" id="invoiceList">
+                    <thead>
+                    <tr>
+                        <th class="col-md-1">Lp</th>
+                        <th class="col-md-2">Name</th>
+                        <th class="col-md-2">Nip</th>
+                        <th class="col-md-2">Street</th>
+                        <th class="col-md-2">City</th>
+                        <th class="col-md-2">ZipCode</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr th:each="customer, iter : ${customers}">
+                        <td th:text="${iter.index} + 1">Id</td>
+                        <td th:text="${customer.name}">Name</td>
+                        <td th:text="${customer.nip}">Nip</td>
+                        <td th:text="${customer.address.streetAddress}">Name</td>
+                        <td th:text="${customer.address.city}">Name</td>
+                        <td th:text="${customer.address.zipCode}">Name</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+
+        $('#invoiceList').DataTable({
+            scrollY: '50vh',
+            scrollCollapse: true,
+            paging: false,
+            info: false,
+
+            columnDefs: [{
+                /*Disable sorting for buttons*/
+                targets: [7, 8, 9],
+                orderable: false
+            }]
+        });
+        $('#confirm-delete').on('show.bs.modal', function (e) {
+            $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+        });
+
+        $('.clickable').click(function () {
+            console.log($(this).attr("href"));
+            window.location.href = $(this).attr("href");
+        });
+    });
+
+</script>
+
+
+</body>
+</html>
