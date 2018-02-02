@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import tk.mbondos.controllers.CustomerController;
 import tk.mbondos.domain.Customer;
 import tk.mbondos.domain.embeddable.Address;
+import tk.mbondos.repositories.CustomerRepository;
 import tk.mbondos.services.CustomerService;
 
 import java.util.Arrays;
@@ -30,6 +31,9 @@ public class CustomerControllerTest {
 
     @Autowired
     private MockMvc mvc;
+
+    @MockBean
+    private CustomerRepository customerRepository;
 
     @MockBean
     private CustomerService customerService;
