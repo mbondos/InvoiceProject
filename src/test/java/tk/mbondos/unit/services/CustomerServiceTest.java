@@ -23,6 +23,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 public class CustomerServiceTest {
 
+    @Autowired
+    private CustomerService customerService;
+
+    @MockBean
+    private CustomerRepository customerRepository;
+
     @TestConfiguration
     static class CustomerServiceTestContextConfiguration {
         @Bean
@@ -30,12 +36,6 @@ public class CustomerServiceTest {
             return new CustomerService();
         }
     }
-
-    @Autowired
-    private CustomerService customerService;
-
-    @MockBean
-    private CustomerRepository customerRepository;
 
     @Before
     public void setUp() {

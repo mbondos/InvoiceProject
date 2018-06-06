@@ -22,7 +22,7 @@ public class InvoiceProjectApplication {
 		SpringApplication.run(InvoiceProjectApplication.class, args);
 	}
 
-	@Bean
+	/*@Bean
 	public CommandLineRunner init(CustomerRepository customerRepository, InvoiceRepository invoiceRepository,
 								  OrganizationRepository organizationRepository, InvoiceLinesRepository invoiceLinesRepository,
 								  ProductRepository productRepository) {
@@ -49,7 +49,7 @@ public class InvoiceProjectApplication {
 									organization, PaymentType.CASH, invoiceLines, new BigDecimal(300), new BigDecimal(69), new BigDecimal(369)));
 						});
 
-	}
+	}*/
 
 
 }
