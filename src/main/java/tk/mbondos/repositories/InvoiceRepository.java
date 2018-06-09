@@ -14,7 +14,7 @@ import java.util.Map;
 @Repository
 public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
 
-    public Invoice findTopByOrderByIdDesc();
+    Invoice findTopByOrderByIdDesc();
 
     List<Invoice> findAllByOrderByServiceDate();
 }

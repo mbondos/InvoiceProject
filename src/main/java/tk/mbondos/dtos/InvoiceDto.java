@@ -149,9 +149,6 @@ public class InvoiceDto {
         this.totalBrutto = totalBrutto;
     }
 
-    public void validate() {
-        //TODO validate
-    }
 }
 
 

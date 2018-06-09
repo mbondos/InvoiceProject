@@ -77,7 +77,12 @@
 			<scope>test</scope>
 		</dependency>
 
-
+        <dependency>
+            <groupId>com.foreach.libs</groupId>
+            <artifactId>common-test</artifactId>
+            <version>1.1</version>
+            <scope>test</scope>
+        </dependency>
 
 
 	</dependencies>

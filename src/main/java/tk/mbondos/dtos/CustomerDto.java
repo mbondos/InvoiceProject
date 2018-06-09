@@ -22,6 +22,11 @@ public class CustomerDto {
         this.nip = nip;
     }
 
+    public CustomerDto(String name, Address address, String nip) {
+        this.name = name;
+        this.address = address;
+        this.nip = nip;
+    }
 
     public Long getId() {
         return id;

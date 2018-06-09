@@ -26,10 +26,10 @@ public class Invoice {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate serviceDate;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Customer customer;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Organization organization;
 
     private PaymentType paymentType;

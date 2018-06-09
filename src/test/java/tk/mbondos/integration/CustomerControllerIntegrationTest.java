@@ -36,9 +36,6 @@ public class CustomerControllerIntegrationTest {
     @Autowired
     private CustomerRepository customerRepository;
 
-    @Autowired
-    private ModelMapper modelMapper;
-
     @Test
     public void givenCustomers_whenGetCustomers_thenStatus200() throws Exception {
         Customer customer = new Customer("John Smith", new Address("Street", "City", "zip"), "nip");

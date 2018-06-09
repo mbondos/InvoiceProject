@@ -97,7 +97,7 @@ public class InvoiceHtmlController {
             return "invoice/add";
         }
 
-        invoice.validate();
+
         customer.validate();
 
 
